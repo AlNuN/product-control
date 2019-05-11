@@ -1,0 +1,13 @@
+-*- DB -*-
+-> Tabelas:
+- Com todos os usuários
+- Com todos os produtos e quantidade em estoque
+- Com o uso dos produtos: produto/usuário/data/quantidade
+
+
+-*- Core -*-
+-> Telas: (navegação em abas)
+- Login
+- Remover produtos do estoque (inicial após login - primeira aba)
+- Adicionar produtos ao estoque
+- Cadastrar novos produtos 

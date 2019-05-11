@@ -7,9 +7,20 @@
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AlNuN/product-control.git"
+  },
   "author": "Matheus Alves Nunes",
   "license": "ISC",
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.8.2",
     "electron": "^5.0.1"
+  },
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "bootstrap-input-spinner": "^1.11.4",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.15.0"
   }
 }

@@ -1,12 +1,12 @@
 -*- DB -*-
--> Tabelas:
+-> Collections:
 - Com todos os usuários
-- Com todos os produtos e quantidade em estoque
-- Com o uso dos produtos: produto/usuário/data/quantidade
+- Com todos os produtos e quantidade em estoque (obj)
+- Com o uso dos produtos: produto/usuário(references); data/quantidade
 
 
 -*- Core -*-
--> Telas: (navegação em abas)
+-> Telas: (navegação em abas - AJAX)
 - Login
 - Remover produtos do estoque (inicial após login - primeira aba)
 - Adicionar produtos ao estoque

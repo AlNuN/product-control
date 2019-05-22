@@ -11,6 +11,24 @@
     <div class="form-group">
       <a href="./views/signUp.html">Cadastre-se</a>
     </div>
-      <button class="btn btn-primary" type="submit">Entrar</button>
+      <button onclick="loadForm()"  class="btn btn-primary" type="button">Entrar</button>
   </form>
 </main>
+<script>
+  function loadForm() {
+
+    let username = $("#login").val()
+    let password = $('#password').val()
+
+    const {ipcRenderer} = require('electron')
+
+    // send username to main.js 
+    ipcRenderer.send('asynchronous-message', `{user: ${username}, password: ${password}}` )
+
+    // receive message from main.js
+    ipcRenderer.on('asynchronous-reply', (event, arg) => {
+      console.log(arg)
+    })
+
+}
+</script>

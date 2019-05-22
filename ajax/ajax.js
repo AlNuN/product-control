@@ -1,5 +1,7 @@
+let $ = require('jquery')
+
 window.onload = ()=>{
-    $("#body").load("./views/mainBody.html")
+    $("#body").load("./views/signIn.html")
 }
 
 function removerProdutos() {

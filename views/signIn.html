@@ -23,7 +23,7 @@
     const {ipcRenderer} = require('electron')
 
     // send username to main.js 
-    ipcRenderer.send('asynchronous-message', `{user: ${username}, password: ${password}}` )
+    ipcRenderer.send('asynchronous-message', `{"user": "${username}", "password": "${password}"}` )
 
     // receive message from main.js
     ipcRenderer.on('asynchronous-reply', (event, arg) => {

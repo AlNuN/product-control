@@ -2,7 +2,7 @@
   "name": "controle_estoque",
   "version": "0.1.0",
   "description": "Aplicativo para controle de entrada e saída de materiais oftalmológicos do posto de saúde Ariosto",
-  "main": "main.js",
+  "main": "./js/main/main.js",
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"

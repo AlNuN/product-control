@@ -1,25 +1,20 @@
-let ajax = new XMLHttpRequest()
-
-let body = document.getElementById('body')
-
 window.onload = ()=>{
-    $("#body").load("./views/signIn.html")
+    $("#body").load("./views/mainBody.html")
 }
 
 function removerProdutos() {
-    let contents = document.getElementById('main')
-    contents.innerHTML = 'aew, porra'
+    $('#main').html('remover produtos')
 }
 
 function adicionarProdutos(){
-    contents.innerHTML = ''
+    $('#main').html('adicionar produtos')
 }
     
 function cadastrarProdutos(){
-    contents.innerHTML = ''
+    $('#main').html('cadastrar produtos')
 }
     
 function configuracoesUsuario(){
-    contents.innerHTML = ''
+    $('#main').html('configurações de usuário')
 }
   

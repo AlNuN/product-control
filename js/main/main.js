@@ -19,8 +19,7 @@ function createWindow() {
     // receive message from index.html 
     ipcMain.on('asynchronous-message', (event, arg) => {
         // parse data into a JSON object
-        let data = JSON.parse(arg)
-        usersDB.insert(data, (err, data)=>{
+        usersDB.insert(arg, (err, data)=>{
             // insert it on users data base
 
             if (err) {

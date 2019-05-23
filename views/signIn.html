@@ -17,13 +17,13 @@
 <script>
   function loadForm() {
 
-    let username = $("#login").val()
-    let password = $('#password').val()
+    user.login = $("#login").val()
+    user.password = $('#password').val()
 
     const {ipcRenderer} = require('electron')
 
     // send username to main.js 
-    ipcRenderer.send('asynchronous-message', `{"user": "${username}", "password": "${password}"}` )
+    ipcRenderer.send('asynchronous-message', user )
 
     // receive message from main.js
     ipcRenderer.on('asynchronous-reply', (event, arg) => {

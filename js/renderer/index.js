@@ -1,4 +1,7 @@
 let $ = require('jquery')
+let Users = require('../js/classes/Users.js')
+
+let user = Users
 
 window.onload = ()=>{
     $("#body").load("../views/signIn.html")

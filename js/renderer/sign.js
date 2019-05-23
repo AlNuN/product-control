@@ -1,6 +1,7 @@
 // login related code
-module.exports = {
 
+module.exports = {
+    
     login: ()=> {
 
         let user = Users
@@ -8,15 +9,8 @@ module.exports = {
         user.login = $("#login").val()
         user.password = $('#password').val()
         
-        const {ipcRenderer} = require('electron')
-        
         // send username to main.js 
-        ipcRenderer.send('asynchronous-message', user )
-        
-        // receive message from main.js
-        ipcRenderer.on('asynchronous-reply', (event, arg) => {
-            console.log(arg)
-        })
+        ipcRenderer.send('signIn-message', user )
     },
     
     signUp: ()=>{
@@ -28,15 +22,8 @@ module.exports = {
         user.login = $("#signUpLogin").val()
         user.password = $('#signUpPassword').val()
         
-        const {ipcRenderer} = require('electron')
-        
         // send user object to main.js 
-        ipcRenderer.send('asynchronous-message', user )
-        
-        // receive message from main.js
-        ipcRenderer.on('asynchronous-reply', (event, arg) => {
-            console.log(arg)
-        })
+        ipcRenderer.send('signUp-message', user )
     }
     
 };

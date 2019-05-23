@@ -1,8 +1,5 @@
+// product related code
 module.exports = {
-
-    loadSignUp: () => {
-        $("#root").load("../views/signUp.html")
-    },
 
     removerProdutos: ()  => {
         $('#main').html('remover produtos')

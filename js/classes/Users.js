@@ -1,7 +1,7 @@
 class Users {
-    constructor(name, func, login, password) {
+    constructor(name, role, login, password) {
         this.name = name
-        this.func = func
+        this.role = role
         this.login = login
         this.password = password
     }

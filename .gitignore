@@ -1,4 +1,4 @@
 # Removendo os módulos
-node_modules
-refs
-db
+node_modules/
+refs/
+databases/

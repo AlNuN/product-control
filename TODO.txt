@@ -1,13 +1,23 @@
 -*- DB -*-
 -> Collections:
-- Com todos os usuários
++ Com todos os usuários
 - Com todos os produtos e quantidade em estoque (obj)
-- Com o uso dos produtos: produto/usuário(references); data/quantidade
+    - código, material, lote: {lote, validade, data, unidade, quantidade, usuário}
+    - se quantidade chegar a 0, remover o produto
+- Com o uso dos produtos: 
+    - código, material, usuário (references); data, unidade, quantidade
+- Ao 
 
 
 -*- Core -*-
 -> Telas: (navegação em abas - AJAX)
-- Login
-- Remover produtos do estoque (inicial após login - primeira aba)
-- Adicionar produtos ao estoque
-- Cadastrar novos produtos 
+- Embelezar tudo
++ Login
+- Remover/adicionar produtos ao estoque (inicial após login - primeira aba)
+    - Pesquisar
+    - Botão adicionar novo produto (quando não existir pode ter um em cima)
+    - Tabela:
+        - Ordenar por qualquer método
+        - botão de adicionar e de remover produto
+- Relatórios
+- Usuário

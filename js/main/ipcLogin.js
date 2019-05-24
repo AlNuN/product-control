@@ -3,7 +3,7 @@ const { ipcMain } = require('electron')
 
 // instantiate users database
 let usersDB = new Nedb({
-    filename: './db/users',
+    filename: './databases/users',
     autoload: true
 })
 
@@ -46,6 +46,7 @@ module.exports = {
                     if (data == null){
                         event.sender.send('signIn-reply', false )
                     } else {
+                        event.reply('signIn-data', data )
                         event.sender.send('signIn-reply', true )
                     }
                 }

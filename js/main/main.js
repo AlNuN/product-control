@@ -1,5 +1,6 @@
 const {app, BrowserWindow} = require('electron')
 const ipcLogin = require('./ipcLogin')
+const ipcProducts = require('./ipcProducts')
 
 // keeping global reference of the variable, to avoid its garbage collection
 let mainWindow
@@ -10,6 +11,7 @@ function createWindow() {
     mainWindow.webContents.openDevTools()
 
     ipcLogin.communicate()
+    ipcProducts.communicate()
 
     mainWindow.on('closed', () => {
         mainWindow = null

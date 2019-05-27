@@ -1,16 +1,23 @@
 class Products {
-    constructor(code, name, options = {}) {
+    constructor(code, name, lot) {
         this.code = code
         this.name = name
-        this.lot = Object.assign({
-            lot: undefined,
-            validity: undefined,
-            date: undefined,
-            unit: undefined, 
-            amount: undefined, 
-            user: undefined,
-        }, options)
     }
 }
 
-module.exports = new Products()
+class Product {
+    constructor(code, lot, validity, date, unit, amount, user){
+        this.code = code
+        this.lot = lot
+        this.validity = validity
+        this.date = date
+        this.unit = unit 
+        this.amount = amount 
+        this.user = user
+    }
+}
+
+module.exports = {
+    Products : Products,
+    Product: Product
+}

@@ -1,0 +1,43 @@
+<div class="container">
+
+  <div class="row mb-5">
+    <div class="col">
+      <h1 class="display-4">Consultar Produtos</h1>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+
+      <div class="col-sm-2">
+        <input class="form-control" type="text" name="checkCode" id="checkCode" placeholder="Código">
+      </div>
+
+      <div class="col-sm-6">
+        <input class="form-control" type="text" name="checkName" id="checkName" placeholder="Produto">
+      </div>
+
+      <div class="col-sm-2">
+        <input class="form-control" type="text" name="checkLot" id="checkLot" placeholder="Lote">
+      </div>
+
+      <div class="col-sm-4">
+        <input class="form-control" type="date" name="checkValidity" id="checkValidity" placeholder="Validade">
+      </div>
+
+      <div class="col-sm-3">
+        <input class="form-control" type="text" name="checkUnit" id="checkUnit" placeholder="Unidade">
+      </div>
+
+      <div class="col-sm-3">
+        <input class="form-control" type="number" name="checkAmount" id="checkAmount" placeholder="Quantidade">
+      </div>
+
+      <button class="btn btn-primary" type="button" id="searchProducts">Procurar</button>
+
+  </div>
+  
+</div>
+<div class="container mt-3" id="productsList"></div>
+</div>
+
+<script src="../js/renderer/checkProducts.js"></script>

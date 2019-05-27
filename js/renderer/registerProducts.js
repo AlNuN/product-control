@@ -1,18 +1,15 @@
 
-$('#addProduct').on('click', ()=>{
-    $(".popup-overlay, .popup-content").addClass("active")
-})
-
 $('#addProductsDb').on('click', () =>{
+    products.code = $('#addCode').val()
+    products.name = $('#addName').val()
     product.code = $('#addCode').val()
-    product.name = $('#addName').val()
-    product.lot.lot = $('#addLot').val()
-    product.lot.validity = ($('#addValidity').val() + 'T00:00:00.000Z')
-    product.lot.date = new Date()
-    product.lot.unit = $('#addUnit').val() 
-    product.lot.amount = Number($('#addAmount').val())
-    product.lot.user = loggedUser.login
+    product.lot = $('#addLot').val()
+    product.validity = ($('#addValidity').val() + 'T00:00:00.000Z')
+    product.date = new Date()
+    product.unit = $('#addUnit').val() 
+    product.amount = Number($('#addAmount').val())
+    product.user = loggedUser.login
 
-    ipcRenderer.send('addProduct-message', product )
+    ipcRenderer.send('addProducts-message', products, product )
 })
 

@@ -12,7 +12,7 @@ module.exports = {
     },
 
     chart: () => {
-        $('#main').html('tabela')
+        $('#main').load('../views/checkProducts.html')
     },
 
     reports: () => {

@@ -1,18 +1,24 @@
 const Nedb = require('nedb')
 const { ipcMain } = require('electron')
 
-// instantiate products database
+// instantiate products databases
+
 let productsDB = new Nedb({
     filename: './databases/products',
     autoload: true
 })
 
-let productDB = new Nedb({
-    filename: './databases/product',
+let productInputDB = new Nedb({
+    filename: './databases/productInput',
     autoload: true
 })
 
-let productUsageDB = new Nedb({
+let productStockDB = new Nedb({
+    filename: './databases/productStock',
+    autoload: true
+})
+
+let productOutputDB = new Nedb({
     filename: './databases/productUsage',
     autoload: true
 })
@@ -23,6 +29,8 @@ module.exports = {
 
         // receive user object from sign.signUp
         ipcMain.on('addProducts-message', (event, arg1, arg2) => {
+            arg2.date = new Date(arg2.date)
+            arg2.validity = new Date(arg2.validity)
             // test if products exists
             productsDB.findOne({code:arg1.code}).exec((err, data) =>{
                 if (err) {
@@ -37,14 +45,23 @@ module.exports = {
                                 console.log(data)
                             }
                         })
-                        // and in product database
-                        productDB.insert(arg2, (err, data)=>{
+                        // and in product databases
+                        productInputDB.insert(arg2, (err, data)=>{
                             if (err) {
                                 console.log(`error: ${err}`)
                             } else {
-                                console.log(data)
+                                console.log(data, 'input')
                             }
                         })
+
+                        productStockDB.insert(arg2, (err, data)=>{
+                            if (err) {
+                                console.log(`error: ${err}`)
+                            } else {
+                                console.log(data, 'stock')
+                            }
+                        })
+
                         event.sender.send('addProducts-reply', true )
                     } else {
                         event.sender.send('addProducts-reply', false)
@@ -72,12 +89,12 @@ module.exports = {
         // receive product query
         ipcMain.on('findLots-message', (event, arg, idx) => {
             // find it on product data base
-            productDB.find({"code":arg.toString()}, (err, data)=>{
+            productStockDB.find({"code":arg.toString()}, (err, data)=>{
                 if (err) {
                     console.log(`error: ${err}`)
                 } else {
                     if (data == null){
-                        console.log('não há produtos no banco de dados!')
+                        console.log('não há lotes no banco de dados!')
                     } else {
                         event.sender.send('findLots-reply', data, idx)
                     }
@@ -86,27 +103,90 @@ module.exports = {
         })
 
         ipcMain.on('addLot-message', (event, arg) => {
+            arg.date = new Date(arg.date)
+            arg.validity = new Date(arg.validity)
             // find it on product data base
-            productDB.findOne({code:arg.lot}).exec((err, data) =>{
+            productStockDB.insert(arg, (err, data)=>{
                 if (err) {
                     console.log(`error: ${err}`)
                 } else {
-                    if (data == null){
-                        // if not found, insert it on proct database
-                        productDB.insert(arg, (err, data)=>{
-                            if (err) {
-                                console.log(`error: ${err}`)
-                            } else {
-                                console.log(data)
-                            }
-                        })
-                        event.sender.send('addLot-reply', true )
-                    } else {
-                        event.sender.send('addLot-reply', false)
-                    }
+                    console.log(data, 'stock')
                 }
             })
+
+            productInputDB.insert(arg, (err, data)=>{
+                if (err) {
+                    console.log(`error: ${err}`)
+                } else {
+                    console.log(data,  'input')
+                }
+            })
+            event.sender.send('addLot-reply', true )
         })
 
+        ipcMain.on('output-message', (event, id, value, newValue, index, user, unit, inputDate, code, lot) =>{
+            productStockDB.findOne({"_id":id}).exec((failure, editObj) =>{
+                if(failure){
+                    console.log(`error: ${failure}`)
+                } else{
+                    value = Number(value)
+                    newValue = Number(newValue)
+                    let removal = (value - newValue)
+                    let outputObj = {"date": new Date(), "unit":unit, "amount":removal, "user":user, "inputDate": new Date(inputDate), "code":code, "lot":lot}
+                    if(editObj.amount == value){
+                        if(newValue < editObj.amount){
+                            if(newValue == 0){
+                                // If new value = 0, remove from stock, save output and prepare feedback
+                                productStockDB.remove({"_id":id}, {}, (err, numRemoved)=>{
+                                    if(err){
+                                        console.log(`erro: ${err}`)
+                                    } else {
+                                        console.log(`removed: ${numRemoved} from productStockDB`)
+                                    }
+                                })
+                                productOutputDB.insert(outputObj, (err, data)=> {
+                                    if (err) {
+                                        console.log(`error: ${err}`)
+                                    } else {
+                                        console.log(data)
+                                    }
+                                })
+                                event.sender.send('output-reply', true, index, newValue)
+
+                            } else {
+                                // If 0 < newValue < data.amount update stock, save output, prepare feedback
+                                productStockDB.update({"_id":id}, {$set:{"amount":newValue}}, {}, (err, numReplaced)=>{
+                                    if(err){
+                                        console.log(`erro: ${err}`)
+                                    } else {
+                                        console.log(`update, replaced: ${numReplaced}`)
+                                    }
+                                })
+                                productOutputDB.insert(outputObj, (err, data)=>{
+                                    if (err) {
+                                        console.log(`error: ${err}`)
+                                    } else {
+                                        console.log(data)
+                                    }
+                                })
+                                event.sender.send('output-reply', true, index, newValue)
+
+                            } 
+                        } else {
+                            // If newValue = data.amount, there is nothing to change
+                            console.log(`por favor especifique um valor menor que ${value}`)
+                            event.sender.send('output-reply', false, index, newValue)
+                        }
+                        
+                    } else {
+                        // if data.amount != value there is a data inconsistency from db, the program etc
+                        console.log('inconsistência de dados!')
+                        event.sender.send('output-reply', false, index, newValue)
+                    } 
+                }
+
+            })
+        })
     }
+
 }

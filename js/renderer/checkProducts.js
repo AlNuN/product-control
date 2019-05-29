@@ -27,7 +27,7 @@ function addLot (code, idx){
                     </div>
             
                     <div class="col-sm-3">
-                        <input class="form-control" type="date" id="addLotValidity" placeholder="Validade">
+                        <input class="form-control" type="date" id="addLotValidity" placeholder="Validade" title="Válido até">
                     </div>
             
                     <div class="col-sm-2">
@@ -72,9 +72,9 @@ function output (id, index, unit, date, code, lot){
         $(`#tableData-${index}`).html('')
         $(`#tableData-${index}`).html(`
             <div id="tdf" class="tdf">
-            <input type="number" onkeydown="return false" value="${value}" class="form-control-sm" id="inputTableData" max="${value}" min="0">
-            <button class="btn btn-sm btn-success" id="btnInputTableData"><i class="fas fa-check"></i></button>
-            <button class="btn btn-sm btn-danger" id="btnCancelTableData"><i class="fas fa-times"></i></button>
+            <input type="number" onkeydown="return false" value="${value}" class="form-control-sm" id="inputTableData" max="${value}" min="0" title="Clique nas setas para reduzir o estoque">
+            <button class="btn btn-sm btn-success" id="btnInputTableData" title="Confirmar retirada"><i class="fas fa-check"></i></button>
+            <button class="btn btn-sm btn-danger" id="btnCancelTableData" title="Cancelar operação"><i class="fas fa-times"></i></button>
             <small class="text-danger" id="outputFail"></small>
         `)
         $('#btnInputTableData').on('click', () =>{

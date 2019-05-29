@@ -63,8 +63,8 @@ ipcRenderer.on('findProducts-reply', (event, arg)=>{
     $("#productsList").html('')
     let dropDownButton, addLotButton = ''
     arg.forEach( (val, idx, arr) => {
-        dropDownButton = `<button class="btn btn-secondary btn-sm" onclick="loadProductLots(${val.code}, ${idx})"><i class="fas fa-angle-double-down"></i></button>`
-        addLotButton = `<button class="btn btn-secondary btn-sm" onclick="addLot(${val.code}, ${idx})"><i class="fas fa-plus"></i></button>`
+        dropDownButton = `<button class="btn btn-secondary btn-sm" onclick="loadProductLots(${val.code}, ${idx})" title="Mostrar Lotes"><i class="fas fa-angle-double-down"></i></button>`
+        addLotButton = `<button class="btn btn-secondary btn-sm" onclick="addLot(${val.code}, ${idx})" title="Adicionar Lote"><i class="fas fa-plus"></i></button>`
         $('#productsList').append(
             `<div class="row mt-1 border border-dark rounded align-items-center p-1">
                 <div class="col-sm-2">${val.code}</div>
@@ -112,7 +112,7 @@ ipcRenderer.on('findLots-reply', (event, arg, idx)=>{
             // let editButton = ''
             
             arg.forEach((val, index, arr) =>{
-                outputButton = `<button type="button" class="btn btn-warning btn-sm m-1" 
+                outputButton = `<button type="button" class="btn btn-warning btn-sm m-1" title="Retirar produtos deste lote"
                 onclick="output('${val._id}', ${index}, '${val.unit}', '${val.date}', '${val.code}', '${val.lot}')">
                 <i class="fas fa-box-open"></i></button>`
                 // editButton = `<button type="button" class="btn btn-danger btn-sm m-1" onclick="edit('${val._id}')">

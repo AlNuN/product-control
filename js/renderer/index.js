@@ -18,6 +18,11 @@ function loadSignUp () {
     $("#root").load("../views/signUp.html")
 }
 
+function presentDate (date) {
+    date = new Date(date)
+    return date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear()
+}
+
 // receive reply from ipcLogin And deals with registration events
 ipcRenderer.on('signUp-reply', (event, arg) => {
     if(arg) {
@@ -121,8 +126,8 @@ ipcRenderer.on('findLots-reply', (event, arg, idx)=>{
                     `
                     <tr>
                         <td>${val.lot}</td>
-                        <td>${val.validity}</td>
-                        <td>${val.date}</td>
+                        <td>${presentDate(val.validity)}</td>
+                        <td>${presentDate(val.date)}</td>
                         <td>${val.unit}</td>
                         <td id="tableData-${index}">${val.amount}</td>
                         <td>${val.user}</td>
@@ -153,6 +158,65 @@ ipcRenderer.on('output-reply', (event, arg, index, newValue) => {
         $(`#tableData-${index}`).html(`${newValue}`)
     } else {
         $('#outputFail').html('Nenhuma mercadoria foi removida!')
+    }
+})
+
+// load report tables in response to function LoadReportTable in report.js
+ipcRenderer.on('loadReportTable-reply', (event, data, inOrOut, hasData)=>{
+    let entradaOuSaida, valInpDate, amoRem, dataValInp, inOutdate = null
+    // Input: amount = qtde validity = validade
+    // Output: amount = qtde retirada inputDate = data de entrada
+    if (inOrOut == 'Input') {
+        entradaOuSaida = 'entrada'
+        valInpDate = 'Validade'
+        amoRem = 'Quantidade'
+        inOutdate = 'Data Entrada'
+    } else {
+        entradaOuSaida = 'saída'
+        valInpDate = 'Data Entrada'
+        amoRem = 'Qdte Removida'
+        inOutdate = 'Data Saída'
+    }
+
+    if(hasData){
+        $(`#reportTableDiv`).html('')
+        $(`#reportTableDiv`).append( `
+            <div class="table-responsive">
+            <table class="table table-dark table-hover mt-1">
+            <thead>
+            <tr>
+            <th>Código</th>
+            <th>Lote</th>
+            <th>${valInpDate}</th>
+            <th>${inOutdate}</th>
+            <th>Unidade</th>
+            <th>${amoRem}</th>
+            <th>Usuário</th>
+            </tr>
+            </thead>
+            <tbody id="innerReportTable">
+            <tbody>
+            </table>
+            </div>
+        `)
+
+        data.forEach((val, index, arr) =>{
+            dataValInp = (inOrOut == 'Input') ? val.validity : val.inputDate
+            $(`#innerReportTable`).append(`
+                <tr>
+                    <td>${val.code}</td>
+                    <td>${val.lot}</td>
+                    <td>${presentDate(dataValInp)}</td>
+                    <td>${presentDate(val.date)}</td>
+                    <td>${val.unit}</td>
+                    <td>${val.amount}</td>
+                    <td>${val.user}</td>
+                </tr>
+            `)
+        })
+
+    }else {
+        $('#reportTableDiv').html(`<p class="text-danger">Não há dados de ${entradaOuSaida}`)
     }
 })
 

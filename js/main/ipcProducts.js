@@ -187,6 +187,37 @@ module.exports = {
 
             })
         })
+
+
+        ipcMain.on('loadReportTable-message', (event, arg) => {
+            // find it on product data base
+            if(arg == 'Input'){
+                productInputDB.find({}, (err, data)=>{
+                    if (err) {
+                        console.log(`error: ${err}`)
+                    } else {
+                        if (data == null){
+                            event.sender.send('loadReportTable-reply', data, arg, false)
+                        } else {
+                            event.sender.send('loadReportTable-reply', data, arg, true)
+                        }
+                    }
+                })
+            } else {
+                    productOutputDB.find({}, (err, data)=>{
+                        if (err) {
+                            console.log(`error: ${err}`)
+                        } else {
+                            if (data == null){
+                                event.sender.send('loadReportTable-reply', data, arg, false)
+                            } else {
+                                event.sender.send('loadReportTable-reply', data, arg, true)
+                            }
+                        }
+                    })
+            }
+        })
+
     }
 
 }

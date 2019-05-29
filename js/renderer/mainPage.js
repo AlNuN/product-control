@@ -16,7 +16,7 @@ module.exports = {
     },
 
     reports: () => {
-        $('#main').html('relatórios')
+        $('#main').load('../views/reports.html')
     },
         
     userConfigs: () => {

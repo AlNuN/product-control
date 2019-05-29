@@ -1,0 +1,61 @@
+<div class="container">
+
+  <div class="row mb-5">
+    <div class="col">
+      <h1 class="display-4">Relatórios</h1>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+
+      <div class="col-sm-2">
+        <input class="form-control" type="text" id="reportCode" placeholder="Código">
+      </div>
+
+      <div class="col-sm-6">
+        <input class="form-control" type="text" id="reportName" placeholder="Produto">
+      </div>
+
+      <div class="col-sm-2">
+        <input class="form-control" type="text" id="reportLot" placeholder="Lote">
+      </div>
+
+      <div class="col-sm-4">
+        <input class="form-control" type="date" id="reportValidity" title="Validade">
+      </div>
+
+      <div class="col-sm-3">
+        <input class="form-control" type="text" id="reportUnit" placeholder="Unidade">
+      </div>
+
+      <div class="col-sm-3">
+        <input class="form-control" type="number" id="reportAmount" placeholder="Quantidade">
+      </div>
+
+      <button class="btn btn-primary" type="button" id="searchReportTable">Procurar</button>
+
+  </div>
+
+  <div class="row mb-2">
+    <div class="offset-sm-4">
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label class="btn btn-outline-primary active" id="inputsLabel">
+            <input type="radio" name="options" id="reportInputs" autocomplete="off"> Entradas
+          </label>
+          <label class="btn btn-outline-primary" id="outputsLabel">
+            <input type="radio" name="options" id="reportOutputs" autocomplete="off"> Saídas
+          </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+  <div class="row">
+      <div class="col" id="reportTableDiv"></div>
+  </div></div>
+  
+</div>
+</div>
+
+<script src="../js/renderer/reports.js"></script>
+

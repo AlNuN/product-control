@@ -157,15 +157,27 @@ ipcRenderer.on('findLots-reply', (event, arg, idx)=>{
         $(`#variableContentDiv-${idx}`).append(
             `<div id="ldt" class="ldt"></div>
             <div class="table-responsive">
-            <table class="table table-dark table-hover mt-1">
+            <table class="table table-dark table-hover mt-1" id="stockTable">
             <thead>
             <tr>
-            <th>Lote</th>
-            <th>Validade</th>
-            <th>Data</th>
-            <th>Unidade</th>
-            <th>Quantidade</th>
-            <th>Usuário</th>
+            <th onclick="tableSort(0, 'stockTable')">
+                <div class="d-flex justify-content-between align-items-center"><span>Lote</span><i class="fas fa-sort"></i></div>
+            </th>
+            <th onclick="tableSort(1, 'stockTable')">
+                <div class="d-flex justify-content-between align-items-center"><span>Validade</span><i class="fas fa-sort"></i></div>
+            </th>
+            <th onclick="tableSort(2, 'stockTable')">
+                <div class="d-flex justify-content-between align-items-center"><span>Data</span><i class="fas fa-sort"></i></div>
+            </th>
+            <th onclick="tableSort(3, 'stockTable')">
+                <div class="d-flex justify-content-between align-items-center"><span>Unidade</span><i class="fas fa-sort"></i></div>
+            </th>
+            <th onclick="tableSort(4, 'stockTable')">
+                <div class="d-flex justify-content-between align-items-center"><span>Quantidade</span><i class="fas fa-sort"></i></div>
+            </th>
+            <th onclick="tableSort(5, 'stockTable')">
+                <div class="d-flex justify-content-between align-items-center"><span>Usuário</span><i class="fas fa-sort"></i></div>
+            </th>
             <th>Opções</th>
             </tr>
             </thead>

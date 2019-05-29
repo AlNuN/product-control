@@ -19,8 +19,70 @@ function loadSignUp () {
 }
 
 function presentDate (date) {
-    date = new Date(date)
-    return date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear()
+    date = date.split('T')[0]
+    date = date.split('-')
+    return date[2] + '/' + date[1] + '/' + date[0]
+}
+
+function tableSort(n, tbId){
+    let tabela, linhas, trocando, i, x, y, deveriaTrocar,
+        dir, eNumero, contadorTrocas = 0
+    tabela = document.getElementById(tbId)
+    trocando = true;
+    dir = "asc"
+    while (trocando){
+        trocando = false
+        linhas = tabela.rows
+        for (i = 1; i < (linhas.length - 1); i++){
+            deveriaTrocar = false
+            x = linhas[i].getElementsByTagName("td")[n].innerHTML
+            y = linhas[i + 1].getElementsByTagName("td")[n].innerHTML
+            eNumero = isNumeric(x)
+            if(eNumero == false){
+                x = x.toLowerCase()
+                y = y.toLowerCase()
+            } else if (eNumero == -1){
+                x = Number(convertDate(x))
+                y = Number(convertDate(y))
+            } else{
+                x = Number(x)
+                y = Number(y)
+            }
+            if (dir == "asc") {
+                if (x > y) {
+                    deveriaTrocar = true
+                    break
+                }
+            } else if (dir == "desc") {
+                if (x < y){
+                    deveriaTrocar = true
+                    break
+                    }
+            }
+        }
+        if (deveriaTrocar){
+            linhas[i].parentNode.insertBefore(linhas[i + 1], linhas[i])
+            trocando = true
+            contadorTrocas ++
+        } else {
+            if (contadorTrocas == 0 && dir == "asc"){
+                dir = "desc"
+                trocando = true
+            }
+        }
+    }
+}
+
+
+function isNumeric(n){
+    if((/\d+\/\d+\/\d\d\d\d/).test(n)) { return -1 }
+    return !isNaN(parseFloat(n)) && isFinite(n)
+}
+
+
+function convertDate(d){
+    let p = d.split("/")
+    return +(p[2]+p[1]+p[0])
 }
 
 // receive reply from ipcLogin And deals with registration events
@@ -182,16 +244,30 @@ ipcRenderer.on('loadReportTable-reply', (event, data, inOrOut, hasData)=>{
         $(`#reportTableDiv`).html('')
         $(`#reportTableDiv`).append( `
             <div class="table-responsive">
-            <table class="table table-dark table-hover mt-1">
+            <table class="table table-dark table-hover mt-1" id="reportTable">
             <thead>
             <tr>
-            <th>Código</th>
-            <th>Lote</th>
-            <th>${valInpDate}</th>
-            <th>${inOutdate}</th>
-            <th>Unidade</th>
-            <th>${amoRem}</th>
-            <th>Usuário</th>
+            <th onclick="tableSort(0, 'reportTable')">
+                <div class="d-flex justify-content-between align-items-center"><span>Código</span><i class="fas fa-sort"></i></div>
+            </th>
+            <th onclick="tableSort(1, 'reportTable')">
+                <div class="d-flex justify-content-between align-items-center"><span>Lote</span><i class="fas fa-sort"></i></div>
+            </th>
+            <th onclick="tableSort(2, 'reportTable')">
+                <div class="d-flex justify-content-between align-items-center"><span>${valInpDate}</span><i class="fas fa-sort"></i></div>
+            </th>
+            <th onclick="tableSort(3, 'reportTable')">
+                <div class="d-flex justify-content-between align-items-center"><span>${inOutdate}</span><i class="fas fa-sort"></i></div>
+            </th>
+            <th onclick="tableSort(4, 'reportTable')">
+                <div class="d-flex justify-content-between align-items-center"><span>Unidade</span><i class="fas fa-sort"></i></div>
+            </th>
+            <th onclick="tableSort(5, 'reportTable')">
+                <div class="d-flex justify-content-between align-items-center"><span>${amoRem}</span><i class="fas fa-sort"></i></div>
+            </th>
+            <th onclick="tableSort(6, 'reportTable')">
+                <div class="d-flex justify-content-between align-items-center"><span>Usuário</span><i class="fas fa-sort"></i></div>
+            </th>
             </tr>
             </thead>
             <tbody id="innerReportTable">

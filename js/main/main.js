@@ -7,6 +7,9 @@ let mainWindow
 
 function createWindow() {
     mainWindow = new BrowserWindow({width:800, height:600, webPreferences: {nodeIntegration: true}})
+    mainWindow.maximize()
+    mainWindow.show()
+    // mainWindow.setResizable(false)
     mainWindow.loadURL(`file://${__dirname}/../../views/index.html`)
     mainWindow.webContents.openDevTools()
 

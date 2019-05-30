@@ -1,7 +1,7 @@
 const $ = require('jquery')
 const {ipcRenderer} = require('electron')
 const Users = require('../js/renderer/Users.js')
-const { Products, Product} = require('../js/renderer/Products.js')
+const { Products, Product, QueryBuilder } = require('../js/renderer/Products.js')
 const sign = require('../js/renderer/sign.js')
 const mainPage = require('../js/renderer/mainPage.js')
 

@@ -1,4 +1,4 @@
-<div class="container">
+<form class="container">
 
   <div class="row mb-5">
     <div class="col">
@@ -8,35 +8,75 @@
 
   <div class="row mb-2">
 
-      <div class="col-sm-2">
-        <input class="form-control" type="text" id="reportCode" placeholder="Código">
-      </div>
+    <div class="col-sm-2">
+      <input class="form-control" type="text"  name="reportCode" id="reportCode" placeholder="Código">
+    </div>
 
-      <div class="col-sm-6">
-        <input class="form-control" type="text" id="reportName" placeholder="Produto">
-      </div>
+    <div class="col-sm-5">
+      <input class="form-control" type="text" name="reportName" id="reportName" placeholder="Produto">
+    </div>
 
-      <div class="col-sm-2">
-        <input class="form-control" type="text" id="reportLot" placeholder="Lote">
-      </div>
+    <div class="col-sm-2">
+      <input class="form-control" type="text" name="reportLot" id="reportLot" placeholder="Lote">
+    </div>
 
-      <div class="col-sm-4">
-        <input class="form-control" type="date" id="reportValidity" title="Validade">
-      </div>
-
-      <div class="col-sm-3">
-        <input class="form-control" type="text" id="reportUnit" placeholder="Unidade">
-      </div>
-
-      <div class="col-sm-3">
-        <input class="form-control" type="number" id="reportAmount" placeholder="Quantidade">
-      </div>
-
-      <button class="btn btn-primary" type="button" id="searchReportTable">Procurar</button>
+    <div class="col-sm-3">
+      <input class="form-control" type="text" name="reportUnit" id="reportUnit" placeholder="Unidade">
+    </div>
 
   </div>
-
+      
   <div class="row mb-2">
+
+    <div class="input-group col-sm-4">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="reportDateType">Data</label>
+      </div>
+      <select class="custom-select" name="reportDateType" id="reportDateType" 
+        title="Escolha qual campo de data quer buscar e, após, selecione o período">
+        <option value="">-Escolha-</option>
+        <option value="input">Entrada</option>
+        <option value="output">Saída</option>
+        <option value="validity">Validade</option>
+      </select>
+    </div>
+
+    <div class="input-group col-sm-4">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="reportInitialDate">De</label>
+      </div>
+      <input class="form-control" type="date" name="reportInitialDate" id="reportInitialDate" title="Início do período"> 
+    </div>
+
+    <div class="input-group col-sm-4">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="reportFinalDate">Até</label>
+      </div>
+      <input class="form-control" type="date" name="reportFinalDate" id="reportFinalDate" title="Final do período"> 
+    </div>
+    
+  </div>
+  
+  <div class="row mb-3">
+
+    <div class="col-sm-3">
+      <input class="form-control" type="number" name="reportAmount" id="reportAmount" placeholder="Qtde">
+    </div>
+
+    <div class="col-sm-3">
+      <input class="form-control" type="text" name="reportUser" id="reportUser" placeholder="Usuário">
+    </div>
+
+    <div class="col-sm-4">
+      <button class="btn btn-secondary" type="button" id="clearReportFields">Limpar Campos</button>
+    </div>
+
+  </div>
+  
+</form>
+
+<div class="container">
+  <div class="row mb-3">
     <div class="offset-sm-4">
       <div class="btn-group btn-group-toggle" data-toggle="buttons">
           <label class="btn btn-outline-primary active" id="inputsLabel">
@@ -48,13 +88,12 @@
       </div>
     </div>
   </div>
-
-  <div class="container">
+</div>
+  
+<div class="container">
   <div class="row">
       <div class="col" id="reportTableDiv"></div>
-  </div></div>
-  
-</div>
+  </div>
 </div>
 
 <script src="../js/renderer/reports.js"></script>

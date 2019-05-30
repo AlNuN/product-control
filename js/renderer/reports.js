@@ -1,9 +1,9 @@
-let cleanForm
-
 function loadReportTable (type) {
 
     let dirtyForm = $('form').serialize()
     let searchQuery = {}
+    let gte, lte, dateType
+
 
     // compare if form has been modifyed
     if (cleanForm != dirtyForm){
@@ -22,25 +22,13 @@ function loadReportTable (type) {
                     searchQuery.unit = val.value
 
                 } else if (val.name == "reportDateType"){
+                    // the date query is made in main process because it has to be Date object
                     let start = $('#reportInitialDate').val()
                     let finish = $('#reportFinalDate').val()
                     if (start != "" && finish != "" ){
-                        start = start + 'T00:00:00.000Z'
-                        finish = finish + 'T00:00:00.000Z' 
-                        switch (val.value){
-                            case 'input': //Entrada 
-                                if(type == 'Input'){
-                                    searchQuery.date = {"$gte": start, "$lte": finish}
-                                } else{
-                                    searchQuery.inputDate = {"$gte": start, "$lte": finish}
-                                }
-                                break
-                            case 'output': // Saída
-                                if(type == 'Output'){searchQuery.date = {"$gte": start, "$lte": finish} }
-                                break
-                            case 'validity': // Validade
-                                if(type == 'Input'){ searchQuery.date = {"$gte": start, "$lte": finish} }
-                        }
+                        gte = start + 'T00:00:00.000Z'
+                        lte = finish + 'T23:59:59.999Z' 
+                        dateType = val.value
                     }
 
                 } else if (val.name == "reportAmount"){
@@ -53,16 +41,15 @@ function loadReportTable (type) {
         })
     }
 
-    console.log(searchQuery)
 
     if (type == 'Input') {
         // validity: validade 3rd column
         //date: Data Entrada 4th column
-        ipcRenderer.send('loadReportTable-message', type, searchQuery)
+        ipcRenderer.send('loadReportTable-message', type, searchQuery, dateType, gte, lte)
     } else {
         //inputDate: Data Entrada 3rd column
         // date: Data Saída 4th column
-        ipcRenderer.send('loadReportTable-message', type, searchQuery)
+        ipcRenderer.send('loadReportTable-message', type, searchQuery, dateType, gte, lte)
     }
 }
 

@@ -189,15 +189,44 @@ module.exports = {
         })
 
 
-        ipcMain.on('loadReportTable-message', (event, type, searchQuery) => {
-            // find it on product data base
-            // if (searchQuery.date || searchQuery.validity || searchQuery.inputDate)
+        // seaches for the report table and for the page search
+        ipcMain.on('loadReportTable-message', (event, type, searchQuery, dateType, gte, lte) => {
+
+            // date query for Date objects
+            if (gte != null && lte != null){
+                gte = new Date(gte)
+                lte = new Date(lte)
+                switch (dateType){
+                    case 'input': //Entrada 
+                        if(type == 'Input'){
+                            searchQuery.date = {"$gte": gte, "$lte": lte}
+                        } else{
+                            searchQuery.inputDate = {"$gte": gte, "$lte": lte}
+                        }
+                        break
+                    case 'output': // Saída
+                        if(type == 'Output'){
+                            searchQuery.date = {"$gte": gte, "$lte": lte}
+                        } else {
+                            searchQuery.nothing = 'x'
+                        }
+                        break
+                    case 'validity': // Validade
+                        if(type == 'Input'){ 
+                            searchQuery.validity = {"$gte": gte, "$lte": lte}
+                        } else {
+                            searchQuery.nothing = 'x'
+                        }
+                }
+            }
+
+            // database operations  
             if(type == 'Input'){
                 productInputDB.find(searchQuery, (err, data)=>{
                     if (err) {
                         console.log(`error: ${err}`)
                     } else {
-                        if (data == null){
+                        if (data.length == 0){
                             event.sender.send('loadReportTable-reply', data, type, false)
                         } else {
                             event.sender.send('loadReportTable-reply', data, type, true)
@@ -209,7 +238,7 @@ module.exports = {
                         if (err) {
                             console.log(`error: ${err}`)
                         } else {
-                            if (data == null){
+                            if (data.length == 0){
                                 event.sender.send('loadReportTable-reply', data, type, false)
                             } else {
                                 event.sender.send('loadReportTable-reply', data, type, true)

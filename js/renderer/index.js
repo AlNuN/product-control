@@ -8,7 +8,7 @@ const mainPage = require('../js/renderer/mainPage.js')
 let products = new Products()
 let product = new Product()
 let loggedUser =  Users
-let counter = 0
+let cleanForm
 
 $(()=>{
     $("#root").load("../views/signIn.html")
@@ -304,7 +304,7 @@ ipcRenderer.on('loadReportTable-reply', (event, data, inOrOut, hasData)=>{
         })
 
     }else {
-        $('#reportTableDiv').html(`<p class="text-danger">Não há dados de ${entradaOuSaida}`)
+        $('#reportTableDiv').html(`<p class="text-danger">Não há dados de <strong>${entradaOuSaida}</strong> para a pesquisa realizada</p>`)
     }
 })
 

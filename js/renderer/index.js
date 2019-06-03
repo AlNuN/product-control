@@ -19,6 +19,7 @@ function loadSignUp () {
 }
 
 function presentDate (date) {
+    if (date == null || date == '' || date == undefined) { return ''}
     date = date.split('T')[0]
     date = date.split('-')
     return date[2] + '/' + date[1] + '/' + date[0]
@@ -111,17 +112,16 @@ ipcRenderer.on('signIn-reply', (event, arg) => {
     }
 })
 
-ipcRenderer.on('addProducts-reply', (event, arg) => {
+ipcRenderer.on('addProducts-reply', (event, arg, msg) => {
     if (arg){
-        $('#addCode').val('')
-        $('#addName').val('')
-        $('#addLot').val('')
-        $('#addValidity').val('') 
-        $('#addUnit').val('') 
-        $('#addAmount').val('')
-        $('#addProductsSuccess').html("Produto inserido com sucesso!")
+        $('#checkCode').val('')
+        $('#checkName').val('')
+        $('#addProductsFail').html('')
+        $('#addProductsSuccess').html(msg)
+        loadProducts()
     } else {
-        $('#addProductsFail').html('Já existe um produto com mesmo código')
+        $('#addProductsSuccess').html("")
+        $('#addProductsFail').html(msg)
     }
 })
 
@@ -220,9 +220,11 @@ ipcRenderer.on('addLot-reply', (event, arg) => {
         $('#addLotValidity').val('') 
         $('#addLotUnit').val('') 
         $('#addLotAmount').val('')
+        $('#addLotFail').html('')
         $('#addLotSuccess').html("Lote inserido com sucesso!")
     } else {
-        $('#addLotFail').html('Erro: o lote informado já está cadastrado')
+        $('#addLotSuccess').html('')
+        $('#addLotFail').html('Favor preencher os campos obrigatórios')
     }
 })
 
@@ -236,8 +238,8 @@ ipcRenderer.on('output-reply', (event, arg, index, newValue) => {
 })
 
 // load report tables in response to function LoadReportTable in report.js
-ipcRenderer.on('loadReportTable-reply', (event, data, inOrOut, hasData)=>{
-    let entradaOuSaida, valInpDate, amoRem, dataValInp, inOutdate = null
+ipcRenderer.on('loadReportTable-reply', (event, data, inOrOut, hasData, name)=>{
+    let entradaOuSaida, valInpDate, amoRem, dataValInp, inOutdate, tdName = null
     // Input: amount = qtde validity = validade
     // Output: amount = qtde retirada inputDate = data de entrada
     if (inOrOut == 'Input') {
@@ -260,24 +262,27 @@ ipcRenderer.on('loadReportTable-reply', (event, data, inOrOut, hasData)=>{
             <thead>
             <tr>
             <th onclick="tableSort(0, 'reportTable')">
-                <div class="d-flex justify-content-between align-items-center"><span>Código</span><i class="fas fa-sort"></i></div>
+                <div class="d-flex justify-content-between align-items-center"><span>Produto</span><i class="fas fa-sort"></i></div>
             </th>
             <th onclick="tableSort(1, 'reportTable')">
-                <div class="d-flex justify-content-between align-items-center"><span>Lote</span><i class="fas fa-sort"></i></div>
+                <div class="d-flex justify-content-between align-items-center"><span>Código</span><i class="fas fa-sort"></i></div>
             </th>
             <th onclick="tableSort(2, 'reportTable')">
-                <div class="d-flex justify-content-between align-items-center"><span>${valInpDate}</span><i class="fas fa-sort"></i></div>
+                <div class="d-flex justify-content-between align-items-center"><span>Lote</span><i class="fas fa-sort"></i></div>
             </th>
             <th onclick="tableSort(3, 'reportTable')">
-                <div class="d-flex justify-content-between align-items-center"><span>${inOutdate}</span><i class="fas fa-sort"></i></div>
+                <div class="d-flex justify-content-between align-items-center"><span>${valInpDate}</span><i class="fas fa-sort"></i></div>
             </th>
             <th onclick="tableSort(4, 'reportTable')">
-                <div class="d-flex justify-content-between align-items-center"><span>Unidade</span><i class="fas fa-sort"></i></div>
+                <div class="d-flex justify-content-between align-items-center"><span>${inOutdate}</span><i class="fas fa-sort"></i></div>
             </th>
             <th onclick="tableSort(5, 'reportTable')">
-                <div class="d-flex justify-content-between align-items-center"><span>${amoRem}</span><i class="fas fa-sort"></i></div>
+                <div class="d-flex justify-content-between align-items-center"><span>Unidade</span><i class="fas fa-sort"></i></div>
             </th>
             <th onclick="tableSort(6, 'reportTable')">
+                <div class="d-flex justify-content-between align-items-center"><span>${amoRem}</span><i class="fas fa-sort"></i></div>
+            </th>
+            <th onclick="tableSort(7, 'reportTable')">
                 <div class="d-flex justify-content-between align-items-center"><span>Usuário</span><i class="fas fa-sort"></i></div>
             </th>
             </tr>
@@ -288,10 +293,12 @@ ipcRenderer.on('loadReportTable-reply', (event, data, inOrOut, hasData)=>{
             </div>
         `)
 
-        data.forEach((val, index, arr) =>{
+        data.forEach(val =>{
+            name.forEach(value=>{if (value.code == val.code){tdName = value.name}})
             dataValInp = (inOrOut == 'Input') ? val.validity : val.inputDate
             $(`#innerReportTable`).append(`
                 <tr>
+                    <td>${tdName}</td>
                     <td>${val.code}</td>
                     <td>${val.lot}</td>
                     <td>${presentDate(dataValInp)}</td>

@@ -1,5 +1,12 @@
-function loadProducts (){
-    ipcRenderer.send('findProducts-message', {})
+function loadProducts (btn){
+    let query = {}
+    if(btn){
+        let code = $('#checkCode').val()
+        let name = $('#checkName').val()
+        if(code != ''){ query.code = code } 
+        if (name != '') { query.name = name }
+    }
+    ipcRenderer.send('findProducts-message', query)
 }
 
 function loadProductLots (code, idx) {
@@ -22,20 +29,29 @@ function addLot (code, idx){
                 </div>
                 <div class="row align-items-center">
             
-                    <div class="col-sm-2">
+                    <div class="col-sm-2" title='Lote'>
+                        <div>Lote*</div>
                         <input class="form-control" type="text" id="addLotLot" placeholder="Lote">
-                    </div>
-            
-                    <div class="col-sm-3">
-                        <input class="form-control" type="date" id="addLotValidity" placeholder="Validade" title="Válido até">
-                    </div>
-            
-                    <div class="col-sm-2">
+                        </div>
+                        
+                    <div class="col-sm-2" title="Válido até">
+                        <div>Validade</div>
+                        <input class="form-control" type="date" id="addLotValidity" placeholder="Validade">
+                        </div>
+                        
+                    <div class="col-sm-2" title="Data de entrada">
+                        <div>Entrada</div>
+                        <input class="form-control" type="date" id="addLotDate">
+                        </div>
+                        
+                    <div class="col-sm-2" title="Tipo de unidade. Ex: 'cx'">
+                        <div>Unidade</div>
                         <input class="form-control" type="text" id="addLotUnit" placeholder="Unidade">
-                    </div>
-            
-                    <div class="col-sm-2">
-                        <input class="form-control" type="number" id="addLotAmount" placeholder="Quant.">
+                        </div>
+                        
+                    <div class="col-sm-2" title="Quantidade">
+                        <div>Quantidade*</div>
+                        <input class="form-control" type="number" id="addLotAmount" placeholder="Quant." min='1'>
                     </div>
     
                     <div class="col-sm-1">
@@ -46,15 +62,17 @@ function addLot (code, idx){
                     <small class="text-danger" id="addLotFail"></small>
                     <small class="text-success" id="addLotSuccess"></small>
                 </div>
+                    <small>*Campos obrigatórios</small>
             </div>
             `
         )
         $('#addLotProducts').on('click', ()=>{
             let lotItem = new Product()
+            let date = $('#addLotDate').val()
             lotItem.code = code.toString()
             lotItem.lot = $('#addLotLot').val()
             lotItem.validity = ($('#addLotValidity').val() + 'T00:00:00.000Z')
-            lotItem.date = new Date()
+            lotItem.date = (date != '') ? date + 'T00:00:00.000Z' : new Date()
             lotItem.unit = $('#addLotUnit').val()
             lotItem.amount = Number($('#addLotAmount').val())
             lotItem.user = loggedUser.login
@@ -88,13 +106,18 @@ function output (id, index, unit, date, code, lot){
     }
 }
 
-// function edit (id){
-//     console.log(id)
-// }
+function addProducts (){
+    products.code = $('#checkCode').val()
+    products.name = $('#checkName').val()
+    ipcRenderer.send('addProducts-message', products)
+}
 
+function searchProducts (){
+
+}
     
 $(()=>{
     if($('#productsList').html() == ''){
-        loadProducts()
+        loadProducts(false)
     }
 })

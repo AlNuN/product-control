@@ -2,10 +2,10 @@
 -> Collections:
 + Com todos os usuários
 + Com o código e nome
-- Com o código, lote, validade, data de alteração, unidade, quantidade, usuário
-    - Entrada
-    - Saída
-    - Estoque
++ Com o código, lote, validade, data de alteração, unidade, quantidade, usuário
+    + Entrada
+    + Saída
+    + Estoque
 
 
 -*- Core -*-
@@ -13,10 +13,10 @@
 - Embelezar tudo
 + Login
 - Remover/adicionar produtos ao estoque (inicial após login - primeira aba)
-    - Pesquisar
-    - Botão adicionar novo produto (quando não existir pode ter um em cima)
-    - Tabela:
-        - Ordenar por qualquer método
+    + Pesquisar
+    + Botão adicionar novo produto (quando não existir pode ter um em cima)
+    + Tabela:
+        + Ordenar por qualquer método
         - botão de adicionar e de remover produto
-- Relatórios
++ Relatórios
 - Usuário

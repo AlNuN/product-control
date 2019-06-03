@@ -28,51 +28,42 @@ module.exports = {
     communicate: () =>{
 
         // receive user object from sign.signUp
-        ipcMain.on('addProducts-message', (event, arg1, arg2) => {
-            arg2.date = new Date(arg2.date)
-            arg2.validity = new Date(arg2.validity)
+        ipcMain.on('addProducts-message', (event, arg) => {
+            let msg
             // test if products exists
-            productsDB.findOne({code:arg1.code}).exec((err, data) =>{
-                if (err) {
-                    console.log(`error: ${err}`)
-                } else {
-                    if (data == null){
-                        // if not found, insert it on procts database
-                        productsDB.insert(arg1, (err, data)=>{
-                            if (err) {
-                                console.log(`error: ${err}`)
-                            } else {
-                                console.log(data)
-                            }
-                        })
-                        // and in product databases
-                        productInputDB.insert(arg2, (err, data)=>{
-                            if (err) {
-                                console.log(`error: ${err}`)
-                            } else {
-                                console.log(data, 'input')
-                            }
-                        })
-
-                        productStockDB.insert(arg2, (err, data)=>{
-                            if (err) {
-                                console.log(`error: ${err}`)
-                            } else {
-                                console.log(data, 'stock')
-                            }
-                        })
-
-                        event.sender.send('addProducts-reply', true )
+            if (arg.code != '' && arg.name != ''){
+                productsDB.findOne({code:arg.code}).exec((err, data) =>{
+                    if (err) {
+                        console.log(`error: ${err}`)
                     } else {
-                        event.sender.send('addProducts-reply', false)
+                        if (data == null){
+                            // if not found, insert it on procts database
+                            productsDB.insert(arg, (err, data)=>{
+                                if (err) {
+                                    console.log(`error: ${err}`)
+                                } else {
+                                    console.log(data)
+                                }
+                            })
+                            msg = 'Produto inserido com sucesso!'
+                            event.sender.send('addProducts-reply', true, msg )
+                        } else {
+                            msg = 'Já existe um produto com mesmo código'
+                            event.sender.send('addProducts-reply', false, msg)
+                        }
                     }
-                }
-            })
+                })
+            } else {
+                msg = 'Ambos os campos devem ser preenchidos'
+                event.sender.send('addProducts-reply', false, msg)
+            }
+
         })
 
         // receive products query
         ipcMain.on('findProducts-message', (event, arg) => {
             // find it on products data base
+            if(arg.name){ arg.name = new RegExp(arg.name, 'i') }
             productsDB.find(arg).exec((err, data)=>{
                 if (err) {
                     console.log(`error: ${err}`)
@@ -80,6 +71,7 @@ module.exports = {
                     if (data == null){
                         console.log('não há produtos no banco de dados!')
                     } else {
+                        if(arg.name){ arg.name = new RegExp(arg.name, 'i') }
                         event.sender.send('findProducts-reply', data )
                     }
                 }
@@ -104,24 +96,30 @@ module.exports = {
 
         ipcMain.on('addLot-message', (event, arg) => {
             arg.date = new Date(arg.date)
-            arg.validity = new Date(arg.validity)
-            // find it on product data base
-            productStockDB.insert(arg, (err, data)=>{
-                if (err) {
-                    console.log(`error: ${err}`)
-                } else {
-                    console.log(data, 'stock')
-                }
-            })
+            console.log(arg.amount, arg.lot)
+            arg.validity = (arg.validity != 'T00:00:00.000Z') ? new Date(arg.validity) : ''
+            if(arg.amount == 0 || arg.lot == ''){
+                event.sender.send('addLot-reply', false )
+            } else {
+                productStockDB.insert(arg, (err, data)=>{
+                    if (err) {
+                        console.log(`error: ${err}`)
+                    } else {
+                        console.log(data, 'stock')
+                    }
+                })
+    
+                productInputDB.insert(arg, (err, data)=>{
+                    if (err) {
+                        console.log(`error: ${err}`)
+                    } else {
+                        console.log(data,  'input')
+                    }
+                })
 
-            productInputDB.insert(arg, (err, data)=>{
-                if (err) {
-                    console.log(`error: ${err}`)
-                } else {
-                    console.log(data,  'input')
-                }
-            })
-            event.sender.send('addLot-reply', true )
+                event.sender.send('addLot-reply', true )
+
+            }
         })
 
         ipcMain.on('output-message', (event, id, value, newValue, index, user, unit, inputDate, code, lot) =>{
@@ -191,6 +189,7 @@ module.exports = {
 
         // seaches for the report table and for the page search
         ipcMain.on('loadReportTable-message', (event, type, searchQuery, dateType, gte, lte) => {
+            let name
 
             // date query for Date objects
             if (gte != null && lte != null){
@@ -219,6 +218,14 @@ module.exports = {
                         }
                 }
             }
+            
+            productsDB.find({}, {'_id': 0}, (error, result)=>{
+                if(error){
+                    console.log(`error: ${error}`)
+                } else {
+                    name = result
+                }
+            })
 
             // database operations  
             if(type == 'Input'){
@@ -227,9 +234,9 @@ module.exports = {
                         console.log(`error: ${err}`)
                     } else {
                         if (data.length == 0){
-                            event.sender.send('loadReportTable-reply', data, type, false)
+                            event.sender.send('loadReportTable-reply', data, type, false, name)
                         } else {
-                            event.sender.send('loadReportTable-reply', data, type, true)
+                            event.sender.send('loadReportTable-reply', data, type, true, name)
                         }
                     }
                 })
@@ -239,9 +246,9 @@ module.exports = {
                             console.log(`error: ${err}`)
                         } else {
                             if (data.length == 0){
-                                event.sender.send('loadReportTable-reply', data, type, false)
+                                event.sender.send('loadReportTable-reply', data, type, false, name)
                             } else {
-                                event.sender.send('loadReportTable-reply', data, type, true)
+                                event.sender.send('loadReportTable-reply', data, type, true, name)
                             }
                         }
                     })

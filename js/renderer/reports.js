@@ -12,9 +12,6 @@ function loadReportTable (type) {
                 if(val.name == "reportCode" ){
                     searchQuery.code = val.value
 
-                } else if (val.name == "reportName"){
-                    //implementar
-
                 } else if (val.name == "reportLot"){
                     searchQuery.lot = val.value
 
@@ -76,6 +73,8 @@ $('#clearReportFields').on('click', ()=>{
     $('#reportFinalDate').val("")
     $('#reportAmount').val("")
     $('#reportUser').val("")
+    $('#outputsLabel').removeClass('active')
+    $('#inputsLabel').addClass('active')
     loadReportTable('Input')
 })
 

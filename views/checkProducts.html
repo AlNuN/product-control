@@ -2,7 +2,7 @@
 
   <div class="row mb-5">
     <div class="col">
-      <h1 class="display-4">Consultar Produtos</h1>
+      <h1 class="display-4">Estoque</h1>
     </div>
   </div>
 
@@ -16,23 +16,15 @@
         <input class="form-control" type="text" name="checkName" id="checkName" placeholder="Produto">
       </div>
 
-      <!-- <div class="col-sm-2">
-        <input class="form-control" type="text" name="checkLot" id="checkLot" placeholder="Lote">
-      </div>
-
-      <div class="col-sm-4">
-        <input class="form-control" type="date" name="checkValidity" id="checkValidity" placeholder="Validade">
-      </div>
-
-      <div class="col-sm-3">
-        <input class="form-control" type="text" name="checkUnit" id="checkUnit" placeholder="Unidade">
-      </div>
-
-      <div class="col-sm-3">
-        <input class="form-control" type="number" name="checkAmount" id="checkAmount" placeholder="Quantidade">
-      </div> -->
-
-      <button class="btn btn-primary" type="button" id="searchProducts">Procurar</button>
+      <div class="col-sm-2">
+      <button class="btn btn-primary" type="button" onclick="loadProducts(true)">Procurar</button>
+      </div>  
+      
+      <div class="col-sm-2">
+      <button class="btn btn-danger" type="button" onclick="addProducts()">Adicionar</button>
+      </div>  
+      <small class="text-danger" id="addProductsFail"></small>
+      <small class="text-success" id="addProductsSuccess"></small>
 
   </div>
   

@@ -1,17 +1,7 @@
 // product related code
 module.exports = {
     
-    registerProducts: ()  => {
-        $.ajax ({
-            async: true,
-            url: '../views/registerProducts.html',
-            context: document.body
-        }).done(data =>{
-            $('#main').html(data)
-        })
-    },
-
-    chart: () => {
+    stock: () => {
         $('#main').load('../views/checkProducts.html')
     },
 
@@ -20,7 +10,7 @@ module.exports = {
     },
         
     userConfigs: () => {
-        $('#main').html('configurações de usuário')
+        $('#main').load('../views/user.html')
     }
   
 }

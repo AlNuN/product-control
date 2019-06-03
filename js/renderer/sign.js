@@ -24,6 +24,10 @@ module.exports = {
         
         // send user object to main.js 
         ipcRenderer.send('signUp-message', user )
+    },
+
+    loadSignIn: () => {
+        $("#root").load("../views/signIn.html")
     }
     
 };

@@ -11,12 +11,13 @@
     <div class="form-group">
       <label for="signUpLogin">Login</label>
       <input class="form-control" type="text" name="signUpLogin" id="signUpLogin">
-      <small class="form-text text-danger" id="signUpFail"></small>
     </div>
     <div class="form-group">
       <label for="signUpPassword">Senha</label>
       <input class="form-control" type="password" name="signUpPassword" id="signUpPassword">
     </div>
+      <small class="form-text text-danger mb-2" id="signUpFail"></small>
       <button class="btn btn-primary" type="button" onclick="sign.signUp()">Cadastrar</button>
+      <button class="btn btn-secondary" type="button" onclick="sign.loadSignIn()">Voltar</button>
   </form>
 </main>

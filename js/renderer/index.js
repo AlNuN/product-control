@@ -87,11 +87,11 @@ function convertDate(d){
 }
 
 // receive reply from ipcLogin And deals with registration events
-ipcRenderer.on('signUp-reply', (event, arg) => {
+ipcRenderer.on('signUp-reply', (event, arg, msg) => {
     if(arg) {
         $("#root").load("../views/signIn.html")
     } else {
-        $("#signUpFail").html('Login já existente')
+        $("#signUpFail").html(msg)
     }
 })
 
@@ -109,6 +109,14 @@ ipcRenderer.on('signIn-reply', (event, arg) => {
         $('#root').load("../views/mainBody.html")
     } else {
         $('#loginFail').html('Usuário e/ou senha incorreto(s)')
+    }
+})
+
+ipcRenderer.on('changePassword-reply', (event, arg) => {
+    if (arg){
+        $('#passwordFields').html("<small class='text-success'>Senha modificada com sucesso</small>")
+    } else {
+        $('#passwordChangeFail').html('Senha incorreta!')
     }
 })
 

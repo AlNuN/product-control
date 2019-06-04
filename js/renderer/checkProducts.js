@@ -69,10 +69,11 @@ function addLot (code, idx){
         $('#addLotProducts').on('click', ()=>{
             let lotItem = new Product()
             let date = $('#addLotDate').val()
+            let dateEnd = new Date().toISOString().substr(10, 14)
             lotItem.code = code.toString()
             lotItem.lot = $('#addLotLot').val()
             lotItem.validity = ($('#addLotValidity').val() + 'T00:00:00.000Z')
-            lotItem.date = (date != '') ? date + 'T00:00:00.000Z' : new Date()
+            lotItem.date = (date != '') ? date + dateEnd : new Date()
             lotItem.unit = $('#addLotUnit').val()
             lotItem.amount = Number($('#addLotAmount').val())
             lotItem.user = loggedUser.login
@@ -89,7 +90,7 @@ function output (id, index, unit, date, code, lot){
         let value = $(`#tableData-${index}`).html()
         $(`#tableData-${index}`).html('')
         $(`#tableData-${index}`).html(`
-            <div id="tdf" class="tdf">
+            <div id="tdf" class="tdf"></div>
             <input type="number" onkeydown="return false" value="${value}" class="form-control-sm" id="inputTableData" max="${value}" min="0" title="Clique nas setas para reduzir o estoque">
             <button class="btn btn-sm btn-success" id="btnInputTableData" title="Confirmar retirada"><i class="fas fa-check"></i></button>
             <button class="btn btn-sm btn-danger" id="btnCancelTableData" title="Cancelar operação"><i class="fas fa-times"></i></button>
@@ -100,6 +101,30 @@ function output (id, index, unit, date, code, lot){
             ipcRenderer.send('output-message', id, value, newValue, index, loggedUser.login, unit, date, code, lot )
         })
         $('#btnCancelTableData').on('click', () =>{
+            $(`#tableData-${index}`).html(`${value}`)
+        })
+
+    }
+}
+
+function removeLot (id, index, lot, date){
+    if ($('#tdf').hasClass('tdf')){
+    } else{ 
+        let value = $(`#tableData-${index}`).html()
+        $(`#tableData-${index}`).html('')
+        $(`#tableData-${index}`).html(`
+            <div id="tdf" class="tdf"></div>
+            <div><strong>Tem certeza que quer remover o produto?</strong></div>
+            <div>Os dados não serão guardados<div>
+            <button class="btn btn-sm btn-success" id="yesRemove" title="Confirmar remoção"><i class="fas fa-check"></i></button>
+            <button class="btn btn-sm btn-danger" id="noRemove" title="Cancelar remoção"><i class="fas fa-times"></i></button>
+            <small class="text-info" id="removeMsg"></small>
+        `)
+        $('#yesRemove').on('click', () =>{
+            test = new Date()
+            ipcRenderer.send('removeLot-message', id, index, lot, date, test)
+        })
+        $('#noRemove').on('click', () =>{
             $(`#tableData-${index}`).html(`${value}`)
         })
 

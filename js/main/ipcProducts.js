@@ -96,8 +96,8 @@ module.exports = {
 
         ipcMain.on('addLot-message', (event, arg) => {
             arg.date = new Date(arg.date)
-            console.log(arg.amount, arg.lot)
             arg.validity = (arg.validity != 'T00:00:00.000Z') ? new Date(arg.validity) : ''
+
             if(arg.amount == 0 || arg.lot == ''){
                 event.sender.send('addLot-reply', false )
             } else {
@@ -108,7 +108,7 @@ module.exports = {
                         console.log(data, 'stock')
                     }
                 })
-    
+        
                 productInputDB.insert(arg, (err, data)=>{
                     if (err) {
                         console.log(`error: ${err}`)
@@ -118,7 +118,6 @@ module.exports = {
                 })
 
                 event.sender.send('addLot-reply', true )
-
             }
         })
 
@@ -255,6 +254,30 @@ module.exports = {
             }
         })
 
-    }
+        ipcMain.on('removeLot-message', (event, id, index, lot, date, test) =>{
+            productOutputDB.findOne({"lot": lot}).exec((error, result)=>{
+                if (result == null){
+                    date = new Date(date)
+                    productInputDB.remove({"lot": lot, "date": date}, {}, (err, numRemoved)=>{
+                        if (err){
+                            console.log(err)
+                        } else{
+                            console.log('removed ',numRemoved, ' from InputDB')
+                        }
+                    })
+                    productStockDB.remove({"lot": lot, "date": date}, {}, (err, numRemoved)=>{
+                        if (err){
+                            console.log(err)
+                        } else{
+                            console.log('removed ', numRemoved, ' from StockDB')
+                        }
+                    })
+                    event.sender.send('removeLot-reply', true, index, 'Lote removido com sucesso')
+                } else{
+                    event.sender.send('removeLot-reply', false, index, 'Impossível remover, pois já houve saída do produto')
+                }
+            })
+        })
 
+    }
 }

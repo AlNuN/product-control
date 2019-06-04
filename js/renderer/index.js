@@ -202,8 +202,9 @@ ipcRenderer.on('findLots-reply', (event, arg, idx)=>{
                 outputButton = `<button type="button" class="btn btn-warning btn-sm m-1" title="Retirar produtos deste lote"
                 onclick="output('${val._id}', ${index}, '${val.unit}', '${val.date}', '${val.code}', '${val.lot}')">
                 <i class="fas fa-box-open"></i></button>`
-                // editButton = `<button type="button" class="btn btn-danger btn-sm m-1" onclick="edit('${val._id}')">
-                // <i class="fas fa-pencil-alt"></i></button>`
+                deleteButton = `<button class="btn btn-danger btn-sm m-1"  title="Remover registro (Corrigir erro, somente)"
+                onclick="removeLot('${val._id}', ${index}, '${val.lot}', '${val.date}')">
+                <i class="fas fa-times"></i></button>`
                 $(`#innerTable-${idx}`).append(
                     `
                     <tr>
@@ -213,7 +214,7 @@ ipcRenderer.on('findLots-reply', (event, arg, idx)=>{
                         <td>${val.unit}</td>
                         <td id="tableData-${index}">${val.amount}</td>
                         <td>${val.user}</td>
-                        <td>${outputButton}</td>
+                        <td><div class="d-flex justify-content-around">${outputButton}${deleteButton}</div></td>
                     </tr>
                 `
             )
@@ -320,6 +321,14 @@ ipcRenderer.on('loadReportTable-reply', (event, data, inOrOut, hasData, name)=>{
 
     }else {
         $('#reportTableDiv').html(`<p class="text-danger">Não há dados de <strong>${entradaOuSaida}</strong> para a pesquisa realizada</p>`)
+    }
+})
+
+ipcRenderer.on('removeLot-reply', (event, success, index, msg)=>{
+    if (success) {
+        $(`#tableData-${index}`).html('--')
+    } else {
+        $('#removeMsg').html(msg)
     }
 })
 

@@ -248,7 +248,7 @@ ipcRenderer.on('output-reply', (event, arg, index, newValue) => {
 
 // load report tables in response to function LoadReportTable in report.js
 ipcRenderer.on('loadReportTable-reply', (event, data, inOrOut, hasData, name)=>{
-    let entradaOuSaida, valInpDate, amoRem, dataValInp, inOutdate, tdName = null
+    let entradaOuSaida, valInpDate, amoRem, dataValInp, inOutdate, tdName, destinationTh, destinationTd = null
     // Input: amount = qtde validity = validade
     // Output: amount = qtde retirada inputDate = data de entrada
     if (inOrOut == 'Input') {
@@ -256,11 +256,17 @@ ipcRenderer.on('loadReportTable-reply', (event, data, inOrOut, hasData, name)=>{
         valInpDate = 'Validade'
         amoRem = 'Quantidade'
         inOutdate = 'Data Entrada'
+        destinationTh = ''
     } else {
         entradaOuSaida = 'saída'
         valInpDate = 'Data Entrada'
         amoRem = 'Qdte Removida'
         inOutdate = 'Data Saída'
+        destinationTh = `
+            <th onclick="tableSort(8, 'reportTable')">
+                <div class="d-flex justify-content-between align-items-center"><span>Destino</span><i class="fas fa-sort"></i></div>
+            </th>
+        ` 
     }
 
     if(hasData){
@@ -294,6 +300,7 @@ ipcRenderer.on('loadReportTable-reply', (event, data, inOrOut, hasData, name)=>{
             <th onclick="tableSort(7, 'reportTable')">
                 <div class="d-flex justify-content-between align-items-center"><span>Usuário</span><i class="fas fa-sort"></i></div>
             </th>
+            ${destinationTh}
             </tr>
             </thead>
             <tbody id="innerReportTable">
@@ -305,6 +312,7 @@ ipcRenderer.on('loadReportTable-reply', (event, data, inOrOut, hasData, name)=>{
         data.forEach(val =>{
             name.forEach(value=>{if (value.code == val.code){tdName = value.name}})
             dataValInp = (inOrOut == 'Input') ? val.validity : val.inputDate
+            destinationTd = (inOrOut == 'Input') ? '' : `<td>${val.destination}</td>`
             $(`#innerReportTable`).append(`
                 <tr>
                     <td>${tdName}</td>
@@ -315,6 +323,7 @@ ipcRenderer.on('loadReportTable-reply', (event, data, inOrOut, hasData, name)=>{
                     <td>${val.unit}</td>
                     <td>${val.amount}</td>
                     <td>${val.user}</td>
+                    ${destinationTd}
                 </tr>
             `)
         })

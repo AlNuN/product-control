@@ -12,11 +12,11 @@
 -> Telas: (navegação em abas - AJAX)
 - Embelezar tudo
 + Login
-- Remover/adicionar produtos ao estoque (inicial após login - primeira aba)
++ Remover/adicionar produtos ao estoque (inicial após login - primeira aba)
     + Pesquisar
     + Botão adicionar novo produto (quando não existir pode ter um em cima)
     + Tabela:
         + Ordenar por qualquer método
-        - botão de adicionar e de remover produto
+        + botão de adicionar e de remover produto
 + Relatórios
 + Usuário

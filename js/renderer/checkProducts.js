@@ -91,14 +91,24 @@ function output (id, index, unit, date, code, lot){
         $(`#tableData-${index}`).html('')
         $(`#tableData-${index}`).html(`
             <div id="tdf" class="tdf"></div>
-            <input type="number" onkeydown="return false" value="${value}" class="form-control-sm" id="inputTableData" max="${value}" min="0" title="Clique nas setas para reduzir o estoque">
-            <button class="btn btn-sm btn-success" id="btnInputTableData" title="Confirmar retirada"><i class="fas fa-check"></i></button>
-            <button class="btn btn-sm btn-danger" id="btnCancelTableData" title="Cancelar operação"><i class="fas fa-times"></i></button>
+            <div>Quantidade</div>
+            <input type="number" onkeydown="return false" value="${value}" 
+            class="form-control-sm mb-1" id="inputTableData" max="${value}" min="0"
+            title="Clique nas setas para reduzir o estoque">
+            <div>Destino</div>
+            <input type="text" class="form-control-sm mb-1" id="destinationTableData"
+             title="Informe o destino" placeholder="Destino (opcional)">
+            <button class="btn btn-sm btn-success" id="btnInputTableData" 
+            title="Confirmar retirada"><i class="fas fa-check"></i></button>
+            <button class="btn btn-sm btn-danger" id="btnCancelTableData" 
+            title="Cancelar operação"><i class="fas fa-times"></i></button>
+            
             <small class="text-danger" id="outputFail"></small>
         `)
         $('#btnInputTableData').on('click', () =>{
-            let newValue = $(`#inputTableData`).val()
-            ipcRenderer.send('output-message', id, value, newValue, index, loggedUser.login, unit, date, code, lot )
+            let newValue = $('#inputTableData').val()
+            let destination = $('#destinationTableData').val()
+            ipcRenderer.send('output-message', id, value, newValue, index, loggedUser.login, unit, date, code, lot, destination )
         })
         $('#btnCancelTableData').on('click', () =>{
             $(`#tableData-${index}`).html(`${value}`)

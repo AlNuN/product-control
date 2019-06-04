@@ -121,15 +121,15 @@ module.exports = {
             }
         })
 
-        ipcMain.on('output-message', (event, id, value, newValue, index, user, unit, inputDate, code, lot) =>{
+        ipcMain.on('output-message', (event, id, value, newValue, index, user, unit, inputDate, code, lot, destination) =>{
             productStockDB.findOne({"_id":id}).exec((failure, editObj) =>{
                 if(failure){
-                    console.log(`error: ${failure}`)
+                    console.log(failure)
                 } else{
                     value = Number(value)
                     newValue = Number(newValue)
                     let removal = (value - newValue)
-                    let outputObj = {"date": new Date(), "unit":unit, "amount":removal, "user":user, "inputDate": new Date(inputDate), "code":code, "lot":lot}
+                    let outputObj = {"date": new Date(), "unit":unit, "amount":removal, "user":user, "inputDate": new Date(inputDate), "code":code, "lot":lot, "destination":destination}
                     if(editObj.amount == value){
                         if(newValue < editObj.amount){
                             if(newValue == 0){
@@ -156,7 +156,7 @@ module.exports = {
                                     if(err){
                                         console.log(`erro: ${err}`)
                                     } else {
-                                        console.log(`update, replaced: ${numReplaced}`)
+                                        console.log(`updated: ${numReplaced} in productStockDB`)
                                     }
                                 })
                                 productOutputDB.insert(outputObj, (err, data)=>{

@@ -85,10 +85,10 @@ module.exports = {
                 if (err) {
                     console.log(`error: ${err}`)
                 } else {
-                    if (data == null){
-                        console.log('não há lotes no banco de dados!')
+                    if (data.length == 0){
+                        event.sender.send('findLots-reply', false, data, idx)
                     } else {
-                        event.sender.send('findLots-reply', data, idx)
+                        event.sender.send('findLots-reply', true, data, idx)
                     }
                 }
             })
@@ -128,6 +128,7 @@ module.exports = {
                 } else{
                     value = Number(value)
                     newValue = Number(newValue)
+                    let msg = ''
                     let removal = (value - newValue)
                     let outputObj = {"date": new Date(), "unit":unit, "amount":removal, "user":user, "inputDate": new Date(inputDate), "code":code, "lot":lot, "destination":destination}
                     if(editObj.amount == value){
@@ -148,7 +149,7 @@ module.exports = {
                                         console.log(data)
                                     }
                                 })
-                                event.sender.send('output-reply', true, index, newValue)
+                                event.sender.send('output-reply', true, index, newValue, msg)
 
                             } else {
                                 // If 0 < newValue < data.amount update stock, save output, prepare feedback
@@ -166,19 +167,19 @@ module.exports = {
                                         console.log(data)
                                     }
                                 })
-                                event.sender.send('output-reply', true, index, newValue)
+                                event.sender.send('output-reply', true, index, newValue, msg)
 
                             } 
                         } else {
                             // If newValue = data.amount, there is nothing to change
-                            console.log(`por favor especifique um valor menor que ${value}`)
-                            event.sender.send('output-reply', false, index, newValue)
+                            msg = `Por favor especifique um valor menor que ${value}`
+                            event.sender.send('output-reply', false, index, newValue, msg)
                         }
                         
                     } else {
                         // if data.amount != value there is a data inconsistency from db, the program etc
-                        console.log('inconsistência de dados!')
-                        event.sender.send('output-reply', false, index, newValue)
+                        msg = 'Inconsistência de dados. Favor contatar o administrador do sistema'
+                        event.sender.send('output-reply', false, index, newValue, msg)
                     } 
                 }
 
@@ -206,18 +207,18 @@ module.exports = {
                         if(type == 'Output'){
                             searchQuery.date = {"$gte": gte, "$lte": lte}
                         } else {
-                            searchQuery.nothing = 'x'
+                            searchQuery.nothing = 'x'  // there is no output date in input table
                         }
                         break
                     case 'validity': // Validade
                         if(type == 'Input'){ 
                             searchQuery.validity = {"$gte": gte, "$lte": lte}
                         } else {
-                            searchQuery.nothing = 'x'
+                            searchQuery.nothing = 'x'  // there is no validity in output table
                         }
                 }
             }
-            
+
             productsDB.find({}, {'_id': 0}, (error, result)=>{
                 if(error){
                     console.log(`error: ${error}`)

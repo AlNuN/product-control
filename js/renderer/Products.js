@@ -21,20 +21,7 @@ class Product {
 
 }
 
-class QueryBuilder extends Product {
-
-    constructor(code, lot, unit, amount, user, dateType, initialDate, finalDate, name){
-        super(code, lot, unit, amount, user)
-        this.initialDate =  initialDate
-        this.finalDate = finalDate
-        this.dateType = dateType
-        this.name = name
-    }
-
-}
-
 module.exports = {
     Products : Products,
     Product: Product,
-    QueryBuilder: QueryBuilder
 }

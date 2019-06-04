@@ -1,7 +1,7 @@
 const $ = require('jquery')
 const {ipcRenderer} = require('electron')
 const Users = require('../js/renderer/Users.js')
-const { Products, Product, QueryBuilder } = require('../js/renderer/Products.js')
+const { Products, Product } = require('../js/renderer/Products.js')
 const sign = require('../js/renderer/sign.js')
 const mainPage = require('../js/renderer/mainPage.js')
 
@@ -10,14 +10,18 @@ let product = new Product()
 let loggedUser =  Users
 let cleanForm
 
+// page that loads after DOM loading
 $(()=>{
     $("#root").load("../views/signIn.html")
 })
+
 
 function loadSignUp () {
     $("#root").load("../views/signUp.html")
 }
 
+
+// Turn a ISO date string in a dd/mm/yyyy string
 function presentDate (date) {
     if (date == null || date == '' || date == undefined) { return ''}
     date = date.split('T')[0]
@@ -25,6 +29,8 @@ function presentDate (date) {
     return date[2] + '/' + date[1] + '/' + date[0]
 }
 
+
+// sort a column n of a table with a id = tbId. It sorts number, string and date in presentDate format
 function tableSort(n, tbId){
     let tabela, linhas, trocando, i, x, y, deveriaTrocar,
         dir, eNumero, contadorTrocas = 0
@@ -75,18 +81,20 @@ function tableSort(n, tbId){
 }
 
 
+// test if the td content is number, string or date for the tableSort function
 function isNumeric(n){
     if((/\d+\/\d+\/\d\d\d\d/).test(n)) { return -1 }
     return !isNaN(parseFloat(n)) && isFinite(n)
 }
 
 
+// convert date into number for sorting
 function convertDate(d){
     let p = d.split("/")
     return +(p[2]+p[1]+p[0])
 }
 
-// receive reply from ipcLogin And deals with registration events
+
 ipcRenderer.on('signUp-reply', (event, arg, msg) => {
     if(arg) {
         $("#root").load("../views/signIn.html")
@@ -128,7 +136,7 @@ ipcRenderer.on('addProducts-reply', (event, arg, msg) => {
         $('#addProductsSuccess').html(msg)
         loadProducts()
     } else {
-        $('#addProductsSuccess').html("")
+        $('#addProductsSuccess').html('')
         $('#addProductsFail').html(msg)
     }
 })
@@ -157,68 +165,71 @@ ipcRenderer.on('findProducts-reply', (event, arg)=>{
 
 
 // response to function loadProductLots from checkProducts
-ipcRenderer.on('findLots-reply', (event, arg, idx)=>{
+ipcRenderer.on('findLots-reply', (event, hasData, arg, idx)=>{
     if($('#ldt').hasClass('ldt')){
         $(`#variableContentDiv-${idx}`).html('')
     } else{
-        $(`#variableContentDiv-${idx}`).html('')
-        $(`#variableContentDiv-${idx}`).append(
-            `<div id="ldt" class="ldt"></div>
-            <div class="table-responsive">
-            <table class="table table-dark table-hover mt-1" id="stockTable">
-            <thead>
-            <tr>
-            <th onclick="tableSort(0, 'stockTable')">
-                <div class="d-flex justify-content-between align-items-center"><span>Lote</span><i class="fas fa-sort"></i></div>
-            </th>
-            <th onclick="tableSort(1, 'stockTable')">
-                <div class="d-flex justify-content-between align-items-center"><span>Validade</span><i class="fas fa-sort"></i></div>
-            </th>
-            <th onclick="tableSort(2, 'stockTable')">
-                <div class="d-flex justify-content-between align-items-center"><span>Data</span><i class="fas fa-sort"></i></div>
-            </th>
-            <th onclick="tableSort(3, 'stockTable')">
-                <div class="d-flex justify-content-between align-items-center"><span>Unidade</span><i class="fas fa-sort"></i></div>
-            </th>
-            <th onclick="tableSort(4, 'stockTable')">
-                <div class="d-flex justify-content-between align-items-center"><span>Quantidade</span><i class="fas fa-sort"></i></div>
-            </th>
-            <th onclick="tableSort(5, 'stockTable')">
-                <div class="d-flex justify-content-between align-items-center"><span>Usuário</span><i class="fas fa-sort"></i></div>
-            </th>
-            <th>Opções</th>
-            </tr>
-            </thead>
-            <tbody id="innerTable-${idx}">
-            <tbody>
-            </table>
-            </div>`
-            )
-            
-            let outputButton = ''
-            // let editButton = ''
-            
-            arg.forEach((val, index, arr) =>{
-                outputButton = `<button type="button" class="btn btn-warning btn-sm m-1" title="Retirar produtos deste lote"
-                onclick="output('${val._id}', ${index}, '${val.unit}', '${val.date}', '${val.code}', '${val.lot}')">
-                <i class="fas fa-box-open"></i></button>`
-                deleteButton = `<button class="btn btn-danger btn-sm m-1"  title="Remover registro (Corrigir erro, somente)"
-                onclick="removeLot('${val._id}', ${index}, '${val.lot}', '${val.date}')">
-                <i class="fas fa-times"></i></button>`
-                $(`#innerTable-${idx}`).append(
+        if (hasData) {
+            $(`#variableContentDiv-${idx}`).html('')
+            $(`#variableContentDiv-${idx}`).append(
+                `<div id="ldt" class="ldt"></div>
+                <div class="table-responsive">
+                <table class="table table-dark table-hover mt-1" id="stockTable">
+                <thead>
+                <tr>
+                <th onclick="tableSort(0, 'stockTable')">
+                    <div class="d-flex justify-content-between align-items-center"><span>Lote</span><i class="fas fa-sort"></i></div>
+                </th>
+                <th onclick="tableSort(1, 'stockTable')">
+                    <div class="d-flex justify-content-between align-items-center"><span>Validade</span><i class="fas fa-sort"></i></div>
+                </th>
+                <th onclick="tableSort(2, 'stockTable')">
+                    <div class="d-flex justify-content-between align-items-center"><span>Data</span><i class="fas fa-sort"></i></div>
+                </th>
+                <th onclick="tableSort(3, 'stockTable')">
+                    <div class="d-flex justify-content-between align-items-center"><span>Unidade</span><i class="fas fa-sort"></i></div>
+                </th>
+                <th onclick="tableSort(4, 'stockTable')">
+                    <div class="d-flex justify-content-between align-items-center"><span>Quantidade</span><i class="fas fa-sort"></i></div>
+                </th>
+                <th onclick="tableSort(5, 'stockTable')">
+                    <div class="d-flex justify-content-between align-items-center"><span>Usuário</span><i class="fas fa-sort"></i></div>
+                </th>
+                <th>Opções</th>
+                </tr>
+                </thead>
+                <tbody id="innerTable-${idx}">
+                <tbody>
+                </table>
+                </div>`
+                )
+                
+                let outputButton, deleteButton = ''
+                
+                arg.forEach((val, index, arr) =>{
+                    outputButton = `<button type="button" class="btn btn-warning btn-sm m-1" title="Retirar produtos deste lote"
+                    onclick="output('${val._id}', ${index}, '${val.unit}', '${val.date}', '${val.code}', '${val.lot}')">
+                    <i class="fas fa-box-open"></i></button>`
+                    deleteButton = `<button class="btn btn-danger btn-sm m-1"  title="Remover registro (Corrigir erro, somente)"
+                    onclick="removeLot('${val._id}', ${index}, '${val.lot}', '${val.date}')">
+                    <i class="fas fa-times"></i></button>`
+                    $(`#innerTable-${idx}`).append(
+                        `
+                        <tr>
+                            <td>${val.lot}</td>
+                            <td>${presentDate(val.validity)}</td>
+                            <td>${presentDate(val.date)}</td>
+                            <td>${val.unit}</td>
+                            <td id="tableData-${index}">${val.amount}</td>
+                            <td>${val.user}</td>
+                            <td><div class="d-flex justify-content-around">${outputButton}${deleteButton}</div></td>
+                        </tr>
                     `
-                    <tr>
-                        <td>${val.lot}</td>
-                        <td>${presentDate(val.validity)}</td>
-                        <td>${presentDate(val.date)}</td>
-                        <td>${val.unit}</td>
-                        <td id="tableData-${index}">${val.amount}</td>
-                        <td>${val.user}</td>
-                        <td><div class="d-flex justify-content-around">${outputButton}${deleteButton}</div></td>
-                    </tr>
-                `
-            )
-        })
+                )
+            })
+        } else {
+            $(`#variableContentDiv-${idx}`).html(`<div id="ldt" class="ldt"></div><p class="text-danger">Ainda não há lotes cadastrados para este produto</p>`)
+        }
     }
 })
 
@@ -238,19 +249,17 @@ ipcRenderer.on('addLot-reply', (event, arg) => {
 })
 
 // response to function output on checkProducts.js
-ipcRenderer.on('output-reply', (event, arg, index, newValue) => {
+ipcRenderer.on('output-reply', (event, arg, index, newValue, msg) => {
     if (arg){
         $(`#tableData-${index}`).html(`${newValue}`)
     } else {
-        $('#outputFail').html('Nenhuma mercadoria foi removida!')
+        $('#outputFail').html(msg)
     }
 })
 
 // load report tables in response to function LoadReportTable in report.js
 ipcRenderer.on('loadReportTable-reply', (event, data, inOrOut, hasData, name)=>{
     let entradaOuSaida, valInpDate, amoRem, dataValInp, inOutdate, tdName, destinationTh, destinationTd = null
-    // Input: amount = qtde validity = validade
-    // Output: amount = qtde retirada inputDate = data de entrada
     if (inOrOut == 'Input') {
         entradaOuSaida = 'entrada'
         valInpDate = 'Validade'

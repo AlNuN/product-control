@@ -7,12 +7,17 @@ let mainWindow
 
 function createWindow() {
     mainWindow = new BrowserWindow({width:800, height:600, webPreferences: {nodeIntegration: true}})
+
+    // make the main window start maximized
     mainWindow.maximize()
     mainWindow.show()
-    // mainWindow.setResizable(false)
+    // mainWindow.setResizable(false) // window always maximized
+
+    // loads main page
     mainWindow.loadURL(`file://${__dirname}/../../views/index.html`)
     mainWindow.webContents.openDevTools()
 
+    // Login and products database operations
     ipcLogin.communicate()
     ipcProducts.communicate()
 

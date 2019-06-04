@@ -1,10 +1,9 @@
 class Users {
-    constructor(name, role, login, password, level) {
+    constructor(name, role, login, password) {
         this.name = name
         this.role = role
         this.login = login
         this.password = password
-        this.level = level
     }
 }
 module.exports = new Users

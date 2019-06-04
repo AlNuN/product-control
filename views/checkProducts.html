@@ -1,6 +1,7 @@
 <div class="container">
 
-  <div class="row mb-5">
+  <div class="row mb-5"
+  title="Todas as operações de estoque. Permite a consulta, adição e remoção de produtos e lotes do estoque.">
     <div class="col">
       <h1 class="display-4">Estoque</h1>
     </div>
@@ -9,19 +10,23 @@
   <div class="row mb-2">
 
       <div class="col-sm-2">
-        <input class="form-control" type="text" name="checkCode" id="checkCode" placeholder="Código">
+        <input class="form-control" type="text" name="checkCode" id="checkCode" placeholder="Código" 
+        title="Código único do produto">
       </div>
 
       <div class="col-sm-6">
-        <input class="form-control" type="text" name="checkName" id="checkName" placeholder="Produto">
+        <input class="form-control" type="text" name="checkName" id="checkName" placeholder="Produto"
+        title="Nome do produto">
       </div>
 
       <div class="col-sm-2">
-      <button class="btn btn-primary" type="button" onclick="loadProducts(true)">Procurar</button>
+      <button class="btn btn-primary" type="button" onclick="loadProducts(true)"
+      title="Busca o produto pelo nome ou código">Procurar</button>
       </div>  
       
       <div class="col-sm-2">
-      <button class="btn btn-danger" type="button" onclick="addProducts()">Adicionar</button>
+      <button class="btn btn-danger" type="button" onclick="addProducts()"
+      title="Adiciona novo produto à lista abaixo, permitindo adição posterior de novos lotes">Adicionar</button>
       </div>  
       <small class="text-danger" id="addProductsFail"></small>
       <small class="text-success" id="addProductsSuccess"></small>

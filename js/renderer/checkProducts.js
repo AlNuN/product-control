@@ -3,7 +3,7 @@ function loadProducts (btn){
     if(btn){
         let code = $('#checkCode').val()
         let name = $('#checkName').val()
-        if(code != ''){ query.code = code } 
+        if (code != '') { query.code = code } 
         if (name != '') { query.name = name }
     }
     ipcRenderer.send('findProducts-message', query)
@@ -103,7 +103,7 @@ function output (id, index, unit, date, code, lot){
             <button class="btn btn-sm btn-danger" id="btnCancelTableData" 
             title="Cancelar operação"><i class="fas fa-times"></i></button>
             
-            <small class="text-danger" id="outputFail"></small>
+            <small class="text-info" id="outputFail"></small>
         `)
         $('#btnInputTableData').on('click', () =>{
             let newValue = $('#inputTableData').val()
@@ -124,11 +124,13 @@ function removeLot (id, index, lot, date){
         $(`#tableData-${index}`).html('')
         $(`#tableData-${index}`).html(`
             <div id="tdf" class="tdf"></div>
-            <div><strong>Tem certeza que quer remover o produto?</strong></div>
-            <div>Os dados não serão guardados<div>
-            <button class="btn btn-sm btn-success" id="yesRemove" title="Confirmar remoção"><i class="fas fa-check"></i></button>
-            <button class="btn btn-sm btn-danger" id="noRemove" title="Cancelar remoção"><i class="fas fa-times"></i></button>
-            <small class="text-info" id="removeMsg"></small>
+                <div title="Esta opção é somente para corrigir erros. Ela apaga os dados do banco de dados e não pode ser utilizada para lotes que tiveram produtos retirados">
+                <div><strong>Tem certeza que quer remover este lote?</strong></div>
+                <div>Os dados não serão guardados<div>
+                <button class="btn btn-sm btn-success" id="yesRemove" title="Confirmar remoção"><i class="fas fa-check"></i></button>
+                <button class="btn btn-sm btn-danger" id="noRemove" title="Cancelar remoção"><i class="fas fa-times"></i></button>
+                <small class="text-info" id="removeMsg"></small>
+            </div>
         `)
         $('#yesRemove').on('click', () =>{
             test = new Date()
@@ -147,10 +149,6 @@ function addProducts (){
     ipcRenderer.send('addProducts-message', products)
 }
 
-function searchProducts (){
-
-}
-    
 $(()=>{
     if($('#productsList').html() == ''){
         loadProducts(false)

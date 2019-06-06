@@ -91,24 +91,29 @@ function output (id, index, unit, date, code, lot){
         $(`#tableData-${index}`).html('')
         $(`#tableData-${index}`).html(`
             <div id="tdf" class="tdf"></div>
-            <div>Quantidade</div>
+            <div>Quantidade*</div>
             <input type="number" onkeydown="return false" value="${value}" 
             class="form-control-sm mb-1" id="inputTableData" max="${value}" min="0"
             title="Clique nas setas para reduzir o estoque">
             <div>Destino</div>
             <input type="text" class="form-control-sm mb-1" id="destinationTableData"
              title="Informe o destino" placeholder="Destino (opcional)">
+            <div>Data Saída</div>
+            <input type="date" class="form-control-sm mb-1" id="outputDateTableData"
+             title="Opcional, se estiver em branco, a data de saída será a atual" >
             <button class="btn btn-sm btn-success" id="btnInputTableData" 
             title="Confirmar retirada"><i class="fas fa-check"></i></button>
             <button class="btn btn-sm btn-danger" id="btnCancelTableData" 
             title="Cancelar operação"><i class="fas fa-times"></i></button>
-            
+            <br>
             <small class="text-info" id="outputFail"></small>
         `)
         $('#btnInputTableData').on('click', () =>{
+            let outputDate = $('#outputDateTableData').val()
+            outputDate = (outputDate != '') ? outputDate + new Date().toISOString().substr(10, 14) : new Date()
             let newValue = $('#inputTableData').val()
             let destination = $('#destinationTableData').val()
-            ipcRenderer.send('output-message', id, value, newValue, index, loggedUser.login, unit, date, code, lot, destination )
+            ipcRenderer.send('output-message', id, value, newValue, index, loggedUser.login, unit, date, code, lot, destination, outputDate )
         })
         $('#btnCancelTableData').on('click', () =>{
             $(`#tableData-${index}`).html(`${value}`)

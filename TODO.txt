@@ -11,6 +11,8 @@
 -*- Core -*-
 -> Telas: (navegação em abas - AJAX)
 - Embelezar tudo
++ Imprimir Tabela
++ Opção de data de saída
 + Login
 + Remover/adicionar produtos ao estoque (inicial após login - primeira aba)
     + Pesquisar

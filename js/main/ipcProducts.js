@@ -1,5 +1,7 @@
 const Nedb = require('nedb')
-const { ipcMain } = require('electron')
+const { ipcMain, dialog, app } = require('electron')
+const convertHTMLToPDF = require('pdf-puppeteer')
+const fs = require('fs')
 
 // instantiate products databases
 
@@ -121,7 +123,7 @@ module.exports = {
             }
         })
 
-        ipcMain.on('output-message', (event, id, value, newValue, index, user, unit, inputDate, code, lot, destination) =>{
+        ipcMain.on('output-message', (event, id, value, newValue, index, user, unit, inputDate, code, lot, destination, outputDate) =>{
             productStockDB.findOne({"_id":id}).exec((failure, editObj) =>{
                 if(failure){
                     console.log(failure)
@@ -130,7 +132,7 @@ module.exports = {
                     newValue = Number(newValue)
                     let msg = ''
                     let removal = (value - newValue)
-                    let outputObj = {"date": new Date(), "unit":unit, "amount":removal, "user":user, "inputDate": new Date(inputDate), "code":code, "lot":lot, "destination":destination}
+                    let outputObj = {"date": new Date(outputDate), "unit":unit, "amount":removal, "user":user, "inputDate": new Date(inputDate), "code":code, "lot":lot, "destination":destination}
                     if(editObj.amount == value){
                         if(newValue < editObj.amount){
                             if(newValue == 0){
@@ -277,6 +279,36 @@ module.exports = {
                 } else{
                     event.sender.send('removeLot-reply', false, index, 'Impossível remover, pois já houve saída do produto')
                 }
+            })
+        })
+
+        ipcMain.on('printReportTable-message', (event, html)=>{
+            let callback = pdf  => {
+                dialog.showSaveDialog({
+                    title: "Salvar PDF",
+                    buttonLabel: "Salvar",
+                    defaultPath: app.getPath('desktop')
+                }, filename =>{
+                    if (filename != undefined) {
+                        fs.writeFile(filename, pdf, err =>{
+                            if (err) throw err
+                            console.log('Arquivo salvo no destino ', filename)
+                        })
+                    }
+                })
+            }
+
+            convertHTMLToPDF(html, callback, {
+                landscape: true,
+                displayHeaderFooter: true,
+                headerTemplate: `<div style="font-size: 12px; margin-left: 1cm; margin-top: 0.5cm">
+                    <span class="date"></span>
+                    <span class="title" style="margin-left: 7cm"></span>
+                    <span class="pageNumber" style="margin-left: 8.5cm"></span>/<span class="totalPages"></span>
+                    </div>`,
+                footerTemplate: '<div></div>',
+                format: 'A4',
+                margin: {top: '2cm', left: '2cm', right: '2cm', bottom: '2cm'}
             })
         })
 

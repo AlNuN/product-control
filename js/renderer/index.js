@@ -4,6 +4,7 @@ const Users = require('../js/renderer/Users.js')
 const { Products, Product } = require('../js/renderer/Products.js')
 const sign = require('../js/renderer/sign.js')
 const mainPage = require('../js/renderer/mainPage.js')
+const convertHTMLToPDF = require('pdf-puppeteer')
 
 let products = new Products()
 let product = new Product()

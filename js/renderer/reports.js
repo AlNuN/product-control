@@ -78,6 +78,10 @@ $('#clearReportFields').on('click', ()=>{
     loadReportTable('Input')
 })
 
+$('#printReportTable').on('click', ()=>{
+    ipcRenderer.send('printReportTable-message', '<head><meta charset="utf-8"><title>Relatório</title></head><body>' +$('#reportTableDiv').html() + '</body>') // tentar outros métodos no javascript e no jquery
+})
+
 $(()=>{
     if($('#reportTableDiv').html() == ''){
         cleanForm = $('form').serialize()

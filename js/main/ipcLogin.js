@@ -83,6 +83,17 @@ module.exports = {
             
         })
 
+        ipcMain.on('removeUser-message', (event, userId) =>{
+            usersDB.remove({"_id": userId}, {}, (err, numRemoved)=>{
+                if (err){
+                    console.log(err)
+                } else{
+                    console.log(numRemoved)
+                    event.sender.send('removeUser-reply', 'Usuário removido com sucesso')
+                }
+            })
+        })
+
 
     }
 }

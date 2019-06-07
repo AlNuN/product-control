@@ -1,100 +1,95 @@
-<form class="container">
+<div class="container">
 
-  <div class="row mb-5"
-  title="Mostra todas as entradas e saídas. Se um ou mais campos forem preenchidos, os botões de entrada e saída realizam pesquisas baseadas nos termos passados">
-    <div class="col">
-      <h1 class="display-4">Relatórios</h1>
-    </div>
-  </div>
+  <div class="row mb-3 mt-4">
 
-  <div class="row mb-2">
-
-    <div class="col-sm-2">
-      <input class="form-control" type="text"  name="reportCode" id="reportCode" placeholder="Código">
-    </div>
-
-    <div class="col-sm-2">
-      <input class="form-control" type="text" name="reportLot" id="reportLot" placeholder="Lote">
-    </div>
-
-    <div class="col-sm-3">
-      <input class="form-control" type="text" name="reportUnit" id="reportUnit" placeholder="Unidade">
-    </div>
-
-    <div class="col-sm-2">
-      <input class="form-control" type="number" name="reportAmount" id="reportAmount" placeholder="Qtde" title="Quantidade" min="1">
-    </div>
+    <form class="container-fluid">
+      <div class="row mb-2">
   
-    <div class="col-sm-3">
-      <input class="form-control" type="text" name="reportUser" id="reportUser" placeholder="Usuário">
-    </div>
-  </div>
+        <div class="col-sm-2">
+          <input class="form-control" type="text"  name="reportCode" id="reportCode" placeholder="Código">
+        </div>
+  
+        <div class="col-sm-2">
+          <input class="form-control" type="text" name="reportLot" id="reportLot" placeholder="Lote">
+        </div>
+  
+        <div class="col-sm-3">
+          <input class="form-control" type="text" name="reportUnit" id="reportUnit" placeholder="Unidade">
+        </div>
+  
+        <div class="col-sm-2">
+          <input class="form-control" type="number" name="reportAmount" id="reportAmount" placeholder="Qtde" title="Quantidade" min="1">
+        </div>
       
-  <div class="row mb-2">
-
-    <div class="input-group col-sm-4"
-    title="Escolha qual campo de data quer buscar. Após, selecione o período nos dois campos que se seguem">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="reportDateType">Data</label>
+        <div class="col-sm-3">
+          <input class="form-control" type="text" name="reportUser" id="reportUser" placeholder="Usuário">
+        </div>
       </div>
-      <select class="custom-select" name="reportDateType" id="reportDateType">
-        <option value="">-Escolha-</option>
-        <option value="input">Entrada</option>
-        <option value="output">Saída</option>
-        <option value="validity">Validade</option>
-      </select>
-    </div>
-
-    <div class="input-group col-sm-4" title="Início do período">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="reportInitialDate">De</label>
+          
+      <div class="row mb-2">
+  
+        <div class="input-group col-sm-4"
+        title="Escolha qual campo de data quer buscar. Após, selecione o período nos dois campos que se seguem">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="reportDateType">Data</label>
+          </div>
+          <select class="custom-select" name="reportDateType" id="reportDateType">
+            <option value="">-Escolha-</option>
+            <option value="input">Entrada</option>
+            <option value="output">Saída</option>
+            <option value="validity">Validade</option>
+          </select>
+        </div>
+  
+        <div class="input-group col-sm-4" title="Início do período">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="reportInitialDate">De</label>
+          </div>
+          <input class="form-control" type="date" name="reportInitialDate" id="reportInitialDate"> 
+        </div>
+  
+        <div class="input-group col-sm-4" title="Final do período">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="reportFinalDate">Até</label>
+          </div>
+          <input class="form-control" type="date" name="reportFinalDate" id="reportFinalDate"> 
+        </div>
+        
       </div>
-      <input class="form-control" type="date" name="reportInitialDate" id="reportInitialDate"> 
-    </div>
-
-    <div class="input-group col-sm-4" title="Final do período">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="reportFinalDate">Até</label>
+      
+      <div class="row mb-3">
+  
+        <div class="col-sm-12">
+          <button class="btn btn-info mr-2" type="button" id="clearReportFields"
+          title="Limpa todos os campos e apresenta todas as entradas">Limpar Campos</button>
+          <button class="btn btn-success" type="button" id="printReportTable"
+          title="Salva a tabela apresentada abaixo">Salvar Tabela</button>
+        </div>
+  
       </div>
-      <input class="form-control" type="date" name="reportFinalDate" id="reportFinalDate"> 
-    </div>
+      
+    </form>
+  </div>
+
+  <div class="row mb-3">
+        <div class="offset-5">
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-outline-light active" id="inputsLabel"
+              title="Todas as entradas ou busca">
+                <input type="radio" name="options" id="reportInputs" autocomplete="off"> Entradas
+              </label>
+              <label class="btn btn-outline-light" id="outputsLabel"
+              title="Todas as saídas ou busca">
+                <input type="radio" name="options" id="reportOutputs" autocomplete="off"> Saídas
+              </label>
+          </div>
+        </div>
+  </div>
     
-  </div>
-  
-  <div class="row mb-3">
-
-    <div class="col-sm-12">
-      <button class="btn btn-info mr-2" type="button" id="clearReportFields"
-      title="Limpa todos os campos e apresenta todas as entradas">Limpar Campos</button>
-      <button class="btn btn-success" type="button" id="printReportTable"
-      title="Salva a tabela apresentada abaixo">Salvar Tabela</button>
-    </div>
-
-  </div>
-  
-</form>
-
-<div class="container">
-  <div class="row mb-3">
-    <div class="offset-sm-4">
-      <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-outline-primary active" id="inputsLabel"
-          title="Todas as entradas ou busca">
-            <input type="radio" name="options" id="reportInputs" autocomplete="off"> Entradas
-          </label>
-          <label class="btn btn-outline-primary" id="outputsLabel"
-          title="Todas as saídas ou busca">
-            <input type="radio" name="options" id="reportOutputs" autocomplete="off"> Saídas
-          </label>
-      </div>
-    </div>
-  </div>
-</div>
-  
-<div class="container">
   <div class="row">
-      <div class="col" id="reportTableDiv" title="Relatório"></div>
+    <div class="col" id="reportTableDiv" title="Relatório"></div>
   </div>
+
 </div>
 
 <script src="../js/renderer/reports.js"></script>

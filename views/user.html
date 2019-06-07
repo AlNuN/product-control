@@ -1,26 +1,65 @@
-<div class="container">
+<div class="container text-light">
 
-  <div class="row mb-5"
-  title="Permite alteração de senha e logout. Recomenda-se o logout quando não estiver usando o computador">
-    <div class="col">
-      <h1 class="display-4">Configurações de usuário</h1>
+  <div class="row mb-2 mt-4">
+
+    <div class="col-6">
+
+      <div class="card text-light bg-dark">
+
+        <div class="card-header">
+          <h4>Informações do Usuário</h4>
+        </div>
+
+        <div class="card-body" id="userInfo"></div>
+
+        <div class="card-body d-flex justify-content-around">
+          <button class="btn btn-danger" onclick="logout()" title="Volta à tela de login">Logout</button>
+          <button class="btn btn-outline-danger" onclick="userDelete()" title="Apaga o usuário">Remover Usuário</button>
+        </div>
+
+        <div class="card-body" id="userDelete"></div>
+
+      </div>
+
+    </div>
+
+    <div class="col-6">
+
+      <form class="card text-light bg-dark">
+
+        <div class="card-header">
+          <h4>Alterar Senha<h4>
+        </div>
+
+        <div class="card-body">
+          <div class="form-group">
+            <label for="oldPassword">Senha Antiga</label>
+            <input class="form-control" type="password" name="oldPassword" id="oldPassword">
+          </div>
+
+          <div class="form-group">
+            <label for="newPassword">Senha Nova</label>
+            <input class="form-control" type="password" name="newPassword" id="newPassword">
+          </div>
+
+          <div class="form-group">
+            <label for="newPasswordAgain">Repita a Senha Nova</label>
+            <input class="form-control" type="password" name="newPasswordAgain" id="newPasswordAgain">
+          </div>
+
+          <small class="form-text text-info mb-2" id="passwordChangeInfo"></small>
+
+          <div>
+            <button class="btn btn-secondary" type="button" id="confirmPasswordChanging">Confirmar</button>
+          </div>
+
+        </div>
+
+      </form>
+
     </div>
   </div>
-
-  <div class="row mb-2">
-    <div id="userInfo"></div>
-  </div>
-
-  <div class="row mb-2">
-    <button class="btn btn-primary" onclick="changePassword()">Alterar Senha</button>
-  </div>
-
-  <div class="row mb-2">
-    <button class="btn btn-danger" onclick="logout()" title="Volta à tela de login">Logout</button>
-  </div>
   
-</div>
-<div class="container mt-3" id="passwordFields"></div>
 </div>
 
 <script src="../js/renderer/user.js"></script>

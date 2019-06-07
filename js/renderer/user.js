@@ -1,59 +1,42 @@
 $('#userInfo').html(`
-    <div>Nome: ${loggedUser.name}</div>
-    <div>Função: ${loggedUser.role}</div>
-    <div>Usuário: ${loggedUser.login}</div>
+    <p class="card-text">Nome: ${loggedUser.name}</p>
+    <p class="card-text">Função: ${loggedUser.role}</p>
+    <p class="card-text">Usuário: ${loggedUser.login}</p>
 `)
 
 function logout(){
     $("#root").load("../views/signIn.html")
 }
 
-function changePassword () {
-    $('#passwordFields').html(`
+$('#confirmPasswordChanging').on('click', ()=>{
+    let oldPassword = $('#oldPassword').val()
+    let newPassword = $('#newPassword').val()
+    if (newPassword != $('#newPasswordAgain').val() || oldPassword == '' || newPassword == '' ){
+        $('#passwordChangeInfo').html('Os campos não coincidem ou não foram preenchidos')
+    } else {
+        $('#passwordChangeInfo').html('')
+        ipcRenderer.send('changePassword-message', oldPassword, newPassword, loggedUser.login)
+    }
+})
 
-            <div class="container mb-1">
-                <div class="row mb-1">
-                    <div class="col-sm-12">
-                        <h4>Alterar Senha<h4>
-                    </div>
-                </div>
-                <div class="row mb-1">
-                    <div class="col-sm-4">
-                        <div>Senha Antiga</div>
-                        <input class="form-control" type="password" id="oldPassword">
-                    </div>
-                </div>
-                <div class="row mb-1">
-                    <div class="col-sm-4">
-                        <div>Senha Nova</div>
-                        <input class="form-control" type="password" id="newPassword">
-                    </div>
-                </div>
-                <div class="row mb-1">
-                    <div class="col-sm-4">
-                        <div>Repita a Senha Nova</div>
-                        <input class="form-control" type="password" id="newPasswordAgain">
-                    </div>
-                </div>
-                <div class="row mb-1">
-                    <div class="col-sm-4">
-                    <button class="btn btn-secondary" type="button" id="confirmPasswordChanging">Confirmar</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <small class="text-danger" id="passwordChangeFail"></small>
-                </div>
-            </div>
-    `)
-    $('#confirmPasswordChanging').on('click', ()=>{
-        let oldPassword = $('#oldPassword').val()
-        let newPassword = $('#newPassword').val()
-        if (newPassword != $('#newPasswordAgain').val() || oldPassword == '' || newPassword == '' ){
-            $('#passwordChangeFail').html('Os campos não coincidem ou não foram preenchidos')
-        } else {
-            $('#passwordChangeFail').html('')
-            ipcRenderer.send('changePassword-message', oldPassword, newPassword, loggedUser.login)
-        }
+function userDelete(){
+    if ($('#tdu').hasClass('tdu')){
+    } else{ 
+        $('#userDelete').html('')
+        $('#userDelete').html(`
+            <div id="tdu" class="tdu"></div>
+            <div><strong>Tem certeza que quer remover este usuário?</strong></div>
+            <div>Seus dados serão apagados do sistema<div>
+            <button class="btn btn-sm btn-success" id="yesRemoveUser" title="Confirmar remoção"><i class="fas fa-check"></i></button>
+            <button class="btn btn-sm btn-danger" id="noRemoveUser" title="Cancelar remoção"><i class="fas fa-times"></i></button>
+            <small class="text-info" id="removeUserMsg"></small>
+        `)
+        $('#yesRemoveUser').on('click', () =>{
+            ipcRenderer.send('removeUser-message', loggedUser._id)
+        })
+        $('#noRemoveUser').on('click', () =>{
+            $('#userDelete').html('')
+        })
 
-    })
+    }
 }

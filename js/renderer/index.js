@@ -4,7 +4,6 @@ const Users = require('../js/renderer/Users.js')
 const { Products, Product } = require('../js/renderer/Products.js')
 const sign = require('../js/renderer/sign.js')
 const mainPage = require('../js/renderer/mainPage.js')
-const convertHTMLToPDF = require('pdf-puppeteer')
 
 let products = new Products()
 let product = new Product()
@@ -110,6 +109,7 @@ ipcRenderer.on('signIn-data', (event, arg) => {
     loggedUser.role = arg.role
     loggedUser.login = arg.login
     loggedUser.password = arg.password
+    loggedUser._id = arg._id
 })
 
 // receive message from ipcLogin and deals with login events
@@ -117,15 +117,15 @@ ipcRenderer.on('signIn-reply', (event, arg) => {
     if (arg){
         $('#root').load("../views/mainBody.html")
     } else {
-        $('#loginFail').html('Usuário e/ou senha incorreto(s)')
+        $('#loginFail').html('Usuário e/ou senha incorreto')
     }
 })
 
 ipcRenderer.on('changePassword-reply', (event, arg) => {
     if (arg){
-        $('#passwordFields').html("<small class='text-success'>Senha modificada com sucesso</small>")
+        $('#passwordChangeInfo').html("Senha modificada com sucesso")
     } else {
-        $('#passwordChangeFail').html('Senha incorreta!')
+        $('#passwordChangeInfo').html('Senha incorreta!')
     }
 })
 
@@ -150,7 +150,7 @@ ipcRenderer.on('findProducts-reply', (event, arg)=>{
         dropDownButton = `<button class="btn btn-secondary btn-sm" onclick="loadProductLots(${val.code}, ${idx})" title="Mostrar Lotes"><i class="fas fa-angle-double-down"></i></button>`
         addLotButton = `<button class="btn btn-secondary btn-sm" onclick="addLot(${val.code}, ${idx})" title="Adicionar Lote"><i class="fas fa-plus"></i></button>`
         $('#productsList').append(
-            `<div class="row mt-1 border border-dark rounded align-items-center p-1">
+            `<div class="row mt-1 pt-2 rounded align-items-center text-light bg-dark">
                 <div class="col-sm-2">${val.code}</div>
                 <div class="col-sm-6">${val.name}</div>
                 <div class="col-sm-1 offset-2">${dropDownButton}</div>
@@ -349,5 +349,17 @@ ipcRenderer.on('removeLot-reply', (event, success, index, msg)=>{
     } else {
         $('#removeMsg').html(msg)
     }
+})
+
+$('#minimizeButton').on('click', () => {
+    ipcRenderer.send('bar-message', true)
+})
+
+$('#closeButton').on('click', () => {
+    ipcRenderer.send('bar-message', false)
+})
+
+ipcRenderer.on('removeUser-reply', (event, msg)=>{
+    $('#root').load("../views/signIn.html")
 })
 

@@ -1,3 +1,49 @@
+html, body{
+    height: 100%;
+}
+
 body {
-    margin: 0
+    background-color: #505254;
+}
+
+#mainHeader{
+    height: 4%;
+}
+
+.mainBarBtn{
+    margin-top: 6px;
+    height: 20px;
+    width: 20px;
+}
+
+i.fas.fa-times.mainBar::before {
+    margin-left: -4px;
+    vertical-align: 6px;
+}
+
+i.fas.fa-minus.mainBar::before {
+    margin-left: -5px;
+    vertical-align: 6px;
+}
+
+#root{
+    height: 96%;
+}
+
+#mainNav{
+    height: 40px;
+    font-size: 20px;
+}
+
+#mainNav ul li a.nav-link{
+    width: 140px;
+}
+
+#mainNav ul li a.nav-link:hover{
+    border-bottom: 4px solid blue;
+}
+
+.clicked{
+    border-bottom: 4px solid blue;
+    color: rgba(255,255,255,.75) !important;
 }

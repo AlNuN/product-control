@@ -1,38 +1,38 @@
-  <header>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-3">
-    <nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+      <header class="row">
+        <nav class="col-12 navbar navbar-expand navbar-dark bg-dark justify-content-around font-weight-bold" id="mainNav">
 
-      <ul class="navbar-nav">
+          <ul class="navbar-nav">
 
-        <li class="nav-item">
-          <a href="#" class="nav-link" onclick="mainPage.stock()">
-            Estoque
-          </a>
-        </li>
+            <li class="nav-item ">
+              <a href="#" class="nav-link d-flex justify-content-center" onclick="mainPage.stock()" id="mainPageStock"
+              title="Todas as operações de estoque. Permite a consulta, adição e remoção de produtos e lotes do estoque.">
+                Estoque
+              </a>
+            </li>
 
-        <li class="nav-item">
-          <a href="#" class="nav-link" onclick="mainPage.reports()">
-            Relatórios
-          </a>
-        </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link d-flex justify-content-center" onclick="mainPage.reports()" id="mainPageReports"
+              title="Mostra todas as entradas e saídas. Se um ou mais campos forem preenchidos, os botões de entrada e saída realizam pesquisas baseadas nos termos passados">
+                Relatórios
+              </a>
+            </li>
 
-        <li class="nav-item">
-          <a href="#" class="nav-link" onclick="mainPage.userConfigs()">
-            Usuário
-          </a>
-        </li>
-      </ul>
+            <li class="nav-item">
+              <a href="#" class="nav-link d-flex justify-content-center" onclick="mainPage.userConfigs()" id="mainPageUserConfigs"
+              title="Permite alteração de senha e logout. Recomenda-se o logout quando não estiver usando o computador">
+                Usuário
+              </a>
+            </li>
 
-    </nav>
-    </div>
-    <div class="col-sm-9">
-      <main id="main"></main>
-    </div>
-    </div>
+          </ul>
+
+        </nav>
+      </header>
+      <main class="row">
+        <div class="col-10 offset-1" id="main"></div>
+      </main>
   </div>
-  </header>
 
   <script>
     $('#main').on('load', mainPage.stock())

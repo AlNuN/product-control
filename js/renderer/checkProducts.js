@@ -138,8 +138,7 @@ function removeLot (id, index, lot, date){
             </div>
         `)
         $('#yesRemove').on('click', () =>{
-            test = new Date()
-            ipcRenderer.send('removeLot-message', id, index, lot, date, test)
+            ipcRenderer.send('removeLot-message', id, index, lot, date)
         })
         $('#noRemove').on('click', () =>{
             $(`#tableData-${index}`).html(`${value}`)

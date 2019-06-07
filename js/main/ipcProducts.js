@@ -257,7 +257,7 @@ module.exports = {
             }
         })
 
-        ipcMain.on('removeLot-message', (event, id, index, lot, date, test) =>{
+        ipcMain.on('removeLot-message', (event, id, index, lot, date) =>{
             productOutputDB.findOne({"lot": lot}).exec((error, result)=>{
                 if (result == null){
                     date = new Date(date)

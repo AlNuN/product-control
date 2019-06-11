@@ -38,26 +38,35 @@ function loadReportTable (type) {
         })
     }
 
+    ipcRenderer.send('loadReportTable-message', type, searchQuery, dateType, gte, lte)
 
-    if (type == 'Input') {
-        // validity: validade 3rd column
-        //date: Data Entrada 4th column
-        ipcRenderer.send('loadReportTable-message', type, searchQuery, dateType, gte, lte)
-    } else {
-        //inputDate: Data Entrada 3rd column
-        // date: Data Saída 4th column
-        ipcRenderer.send('loadReportTable-message', type, searchQuery, dateType, gte, lte)
-    }
+    // if (type == 'Input') {
+    //     // validity: validade 3rd column
+    //     //date: Data Entrada 4th column
+    // } else {
+    //     //inputDate: Data Entrada 3rd column
+    //     // date: Data Saída 4th column
+    //     ipcRenderer.send('loadReportTable-message', type, searchQuery, dateType, gte, lte)
+    // }
 }
 
 $('#reportInputs').on('click', () =>{
     $('#outputsLabel').removeClass('active')
+    $('#stockLabel').removeClass('active')
     $('#inputsLabel').addClass('active')
     loadReportTable('Input')
 })
 
+$('#reportStock').on('click', () =>{
+    $('#outputsLabel').removeClass('active')
+    $('#inputsLabel').removeClass('active')
+    $('#stockLabel').addClass('active')
+    loadReportTable('Stock')
+})
+
 $('#reportOutputs').on('click', () =>{
     $('#inputsLabel').removeClass('active')
+    $('#stockLabel').removeClass('active')
     $('#outputsLabel').addClass('active')
     loadReportTable('Output')
 })
@@ -74,6 +83,7 @@ $('#clearReportFields').on('click', ()=>{
     $('#reportAmount').val("")
     $('#reportUser').val("")
     $('#outputsLabel').removeClass('active')
+    $('#stockLabel').removeClass('active')
     $('#inputsLabel').addClass('active')
     loadReportTable('Input')
 })

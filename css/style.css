@@ -7,7 +7,7 @@ body {
 }
 
 #mainHeader{
-    height: 5%;
+    height: 30px;
     -webkit-user-select: none;
     -webkit-app-region: drag;
 }
@@ -21,10 +21,11 @@ body {
 }
 
 #root{
-    height: 95%;
+    height: 100%;
 }
 
 #mainNav{
+    margin-top: 30px;
     height: 40px;
     font-size: 20px;
 }
@@ -33,11 +34,15 @@ body {
     width: 140px;
 }
 
-#mainNav ul li a.nav-link:hover{
-    border-bottom: 4px solid blue;
-}
-
 .clicked{
     border-bottom: 4px solid blue;
     color: rgba(255,255,255,.75) !important;
+}
+
+th:hover{
+    cursor: pointer;
+}
+
+.page-contents{
+    margin-top: 90px;
 }

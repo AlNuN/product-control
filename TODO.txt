@@ -10,7 +10,7 @@
 
 -*- Core -*-
 -> Telas: (navegação em abas - AJAX)
-- Embelezar tudo
++ Embelezar tudo
 + Imprimir Tabela
 + Opção de data de saída
 + Login
@@ -22,6 +22,9 @@
         + botão de adicionar e de remover produto
 + Relatórios
 + Usuário
-- Imprimir estoque
+
+-*- Outros -*-
++ Imprimir estoque
 + Colocar .pdf na impressão
 + tratar arraste da janela
++ Corrigir title da página de relatórios

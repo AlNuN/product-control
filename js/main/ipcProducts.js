@@ -199,7 +199,7 @@ module.exports = {
                 lte = new Date(lte)
                 switch (dateType){
                     case 'input': //Entrada 
-                        if(type == 'Input'){
+                        if(type == 'Input' || type == 'Stock'){
                             searchQuery.date = {"$gte": gte, "$lte": lte}
                         } else{
                             searchQuery.inputDate = {"$gte": gte, "$lte": lte}
@@ -213,7 +213,7 @@ module.exports = {
                         }
                         break
                     case 'validity': // Validade
-                        if(type == 'Input'){ 
+                        if(type == 'Input' || type == 'Stock'){ 
                             searchQuery.validity = {"$gte": gte, "$lte": lte}
                         } else {
                             searchQuery.nothing = 'x'  // there is no validity in output table
@@ -242,18 +242,30 @@ module.exports = {
                         }
                     }
                 })
-            } else {
-                    productOutputDB.find(searchQuery, (err, data)=>{
-                        if (err) {
-                            console.log(`error: ${err}`)
+            } else if (type == 'Stock') {
+                productStockDB.find(searchQuery, (err, data)=>{
+                    if (err) {
+                        console.log(`error: ${err}`)
+                    } else {
+                        if (data.length == 0){
+                            event.sender.send('loadReportTable-reply', data, type, false, name)
                         } else {
-                            if (data.length == 0){
-                                event.sender.send('loadReportTable-reply', data, type, false, name)
-                            } else {
-                                event.sender.send('loadReportTable-reply', data, type, true, name)
-                            }
+                            event.sender.send('loadReportTable-reply', data, type, true, name)
                         }
-                    })
+                    }
+                })
+            } else {
+                productOutputDB.find(searchQuery, (err, data)=>{
+                    if (err) {
+                        console.log(`error: ${err}`)
+                    } else {
+                        if (data.length == 0){
+                            event.sender.send('loadReportTable-reply', data, type, false, name)
+                        } else {
+                            event.sender.send('loadReportTable-reply', data, type, true, name)
+                        }
+                    }
+                })
             }
         })
 

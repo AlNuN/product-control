@@ -267,7 +267,13 @@ ipcRenderer.on('loadReportTable-reply', (event, data, inOrOut, hasData, name)=>{
         amoRem = 'Quantidade'
         inOutdate = 'Data Entrada'
         destinationTh = ''
-    } else {
+    } else if (inOrOut == 'Stock'){
+        entradaOuSaida = 'estoque'
+        valInpDate = 'Validade'
+        amoRem = 'Quantidade'
+        inOutdate = 'Data Entrada'
+        destinationTh = ''
+    }else {
         entradaOuSaida = 'saída'
         valInpDate = 'Data Entrada'
         amoRem = 'Qdte Removida'
@@ -321,8 +327,8 @@ ipcRenderer.on('loadReportTable-reply', (event, data, inOrOut, hasData, name)=>{
 
         data.forEach(val =>{
             name.forEach(value=>{if (value.code == val.code){tdName = value.name}})
-            dataValInp = (inOrOut == 'Input') ? val.validity : val.inputDate
-            destinationTd = (inOrOut == 'Input') ? '' : `<td>${val.destination}</td>`
+            dataValInp = (inOrOut == 'Input' || inOrOut == 'Stock') ? val.validity : val.inputDate
+            destinationTd = (inOrOut == 'Input' || inOrOut == 'Stock') ? '' : `<td>${val.destination}</td>`
             $(`#innerReportTable`).append(`
                 <tr>
                     <td>${tdName}</td>
@@ -339,7 +345,7 @@ ipcRenderer.on('loadReportTable-reply', (event, data, inOrOut, hasData, name)=>{
         })
 
     }else {
-        $('#reportTableDiv').html(`<p class="text-danger">Não há dados de <strong>${entradaOuSaida}</strong> para a pesquisa realizada</p>`)
+        $('#reportTableDiv').html(`<p class="text-info">Não há dados de <strong>${entradaOuSaida}</strong> para a pesquisa realizada</p>`)
     }
 })
 

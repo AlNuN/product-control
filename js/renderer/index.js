@@ -352,11 +352,15 @@ ipcRenderer.on('removeLot-reply', (event, success, index, msg)=>{
 })
 
 $('#minimizeButton').on('click', () => {
-    ipcRenderer.send('bar-message', true)
+    ipcRenderer.send('bar-message', 1)
+})
+
+$('#maximizeButton').on('click', () => {
+    ipcRenderer.send('bar-message', 2)
 })
 
 $('#closeButton').on('click', () => {
-    ipcRenderer.send('bar-message', false)
+    ipcRenderer.send('bar-message', 3)
 })
 
 ipcRenderer.on('removeUser-reply', (event, msg)=>{

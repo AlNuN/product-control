@@ -22,3 +22,6 @@
         + botão de adicionar e de remover produto
 + Relatórios
 + Usuário
+- Imprimir estoque
++ Colocar .pdf na impressão
++ tratar arraste da janela

@@ -2,30 +2,39 @@
 
   <div class="row mb-2 mt-4">
 
-      <div class="col-sm-2">
+      <div class="col-2">
         <input class="form-control" type="text" name="checkCode" id="checkCode" placeholder="Código" 
         title="Código único do produto">
       </div>
 
-      <div class="col-sm-7">
+      <div class="col-6">
         <input class="form-control" type="text" name="checkName" id="checkName" placeholder="Produto"
         title="Nome do produto">
       </div>
 
-      <div class="col-sm-3 d-flex justify-content-end">
-      <button class="btn btn-primary" type="button" onclick="loadProducts(true)"
-      title="Busca o produto pelo nome ou código">Procurar</button>
-      <button class="btn btn-danger ml-2" type="button" onclick="addProducts()"
-      title="Adiciona novo produto à lista abaixo, permitindo adição posterior de novos lotes">Adicionar</button>
-      </div>  
+      <div class="col-4 d-flex justify-content-around">
+        <button class="btn btn-primary" type="button" onclick="loadProducts(true)"
+        title="Busca o produto pelo nome ou código">Procurar</button>
+        <button class="btn btn-danger ml-2" type="button" onclick="addProducts()"
+        title="Adiciona novo produto à lista abaixo, permitindo adição posterior de novos lotes">Adicionar</button>
+      </div>
 
+  </div>
+
+  <div class="row mb-2">
+    <div class="col">
       <small class="text-danger" id="addProductsFail"></small>
       <small class="text-success" id="addProductsSuccess"></small>
+    </div>
+  </div>
 
-    </div class="row">
+  </div class="row">
+    <div class="col">
       <div class="container mt-3" id="productsList"></div>
     </div>
+  </div>
 
 </div>
+
 
 <script src="../js/renderer/checkProducts.js"></script>

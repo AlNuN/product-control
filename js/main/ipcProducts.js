@@ -287,7 +287,8 @@ module.exports = {
                 dialog.showSaveDialog({
                     title: "Salvar PDF",
                     buttonLabel: "Salvar",
-                    defaultPath: app.getPath('desktop')
+                    filters: [{name: 'PDF', extensions:['pdf']}],
+                    defaultPath: app.getPath('desktop') + '/.pdf'
                 }, filename =>{
                     if (filename != undefined) {
                         fs.writeFile(filename, pdf, err =>{

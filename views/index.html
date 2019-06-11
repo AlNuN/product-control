@@ -11,18 +11,22 @@
 <body id="body" class="container-fluid">
 
   <header id="mainHeader" class="row bg-dark">
-    <p class="col-sm-3 offset-5 text-white font-weight-bold">Controle de Estoque</p>
-    <div class="offset-3 col-sm-1 d-flex justify-content-end">
-      <button class="btn btn-sm btn-warning rounded-circle mainBarBtn" type="button" id="minimizeButton">
+    <p class="col-3 offset-5 text-white font-weight-bold mt-1">Controle de Estoque</p>
+    <div class="offset-2 col-2 d-flex justify-content-end">
+      <button class="btn btn-sm btn-circle btn-warning mainBarBtn d-flex justify-content-center align-items-center" type="button" id="minimizeButton">
           <i class="fas fa-minus mainBar text-white"></i>
       </button>
-      <button class="btn btn-sm btn-danger rounded-circle mainBarBtn ml-1" type="button" id="closeButton">
+      <button class="btn btn-sm btn-circle btn-success mainBarBtn ml-1 d-flex justify-content-center align-items-center" type="button" id="maximizeButton">
+          <i class="far fa-square mainBar text-white"></i>
+      </button>
+      <button class="btn btn-sm btn-circle btn-danger mainBarBtn ml-1 d-flex justify-content-center align-items-center" type="button" id="closeButton">
           <i class="fas fa-times mainBar"></i>
       </button>
     </div>
   </header>
 
   <div class="row" id="root"></div>
+
 </body>
 
 <script src="../js/renderer/index.js"></script>
